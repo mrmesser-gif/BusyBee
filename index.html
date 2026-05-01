@@ -910,18 +910,6 @@ table.gt td.budchd-client:hover, table.gt td.budchd-builder:hover, table.gt td.b
 .ai-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:7998}
 .ai-overlay.show{display:block}
 @media(max-width:768px){.ai-panel{width:100%;right:-100%}}
-
-/* ── Gantt delete button ── */
-.gantt-del-btn{
-  opacity:0.5;
-  font-size:12px;
-  background:none;border:none;cursor:pointer;
-  padding:1px 4px;border-radius:4px;
-  color:#e53e3e;margin-right:2px;
-  transition:opacity .15s,background .15s;
-  flex-shrink:0;vertical-align:middle;
-}
-.gantt-del-btn:hover{opacity:1;background:#fff0f0}
 </style>
 </head>
 <body>
@@ -1546,16 +1534,7 @@ function renderGantt(){
     nameInp.addEventListener("touchstart",ev=>ev.stopPropagation(),{passive:true});
     var depBtn=document.createElement("button");depBtn.className="dep-link-btn";depBtn.textContent="🔗";depBtn.title="Link tasks (dependency)";
     depBtn.addEventListener("click",function(ev){ev.stopPropagation();toggleDepLink(idx,depBtn);});
-    // Delete button — always visible at start of row
-    const delBtn=document.createElement("button");delBtn.className="gantt-del-btn";delBtn.textContent="🗑";delBtn.title="Delete task";
-    delBtn.addEventListener("click",function(ev){
-      ev.stopPropagation();
-      var t=tasks[idx];
-      if(!confirm('Delete task "'+t.name+'"?'))return;
-      tasks.splice(idx,1);
-      autoSave();renderGantt();
-    });
-    ntd.appendChild(delBtn);ntd.appendChild(dragHdl);ntd.appendChild(upBtn);ntd.appendChild(dnBtn);ntd.appendChild(depBtn);ntd.appendChild(dotSpan);ntd.appendChild(nameInp);
+    ntd.appendChild(dragHdl);ntd.appendChild(upBtn);ntd.appendChild(dnBtn);ntd.appendChild(depBtn);ntd.appendChild(dotSpan);ntd.appendChild(nameInp);
 
 
     // Col 2 – Status dropdown
@@ -3357,11 +3336,11 @@ function autoSave(){
 }
 function cloudSaveNow(){
   if(!cloudConfigured()||!currentUser)return;
-  sbClient.from("busybee_data").upsert({user_id:currentUser.id,data:JSON.stringify({projects:projects,activeProj:activeProj,activeView:activeView,globalSubs:globalSubs}),updated_at:new Date().toISOString()},{onConflict:"user_id"}).then(function(res){if(res.error)setCloudDot("error");else setCloudDot("ok");});
+  sbClient.from("busybee_data").upsert({user_id:currentUser.id,team_id:"shared",data:JSON.stringify({projects:projects,activeProj:activeProj,activeView:activeView,globalSubs:globalSubs}),updated_at:new Date().toISOString()},{onConflict:"user_id"}).then(function(res){if(res.error)setCloudDot("error");else setCloudDot("ok");});
 }
 function cloudLoadData(){
   if(!cloudConfigured()||!currentUser)return;
-  sbClient.from("busybee_data").select("data").eq("user_id",currentUser.id).single().then(function(res){
+  sbClient.from("busybee_data").select("data").eq("team_id","shared").order("updated_at",{ascending:false}).limit(1).single().then(function(res){
     if(res.data&&res.data.data){try{var state=JSON.parse(res.data.data);if(state.projects&&state.projects.length){projects=state.projects;activeProj=state.activeProj||projects[0].id;activeView="overview";if(state.globalSubs&&Array.isArray(state.globalSubs))globalSubs=state.globalSubs;autoSave();}}catch(e){}}
     renderProjBar();updateProjHero();renderCurrentView();showToast("Projects loaded");
   }).catch(function(){renderProjBar();updateProjHero();renderCurrentView();});
