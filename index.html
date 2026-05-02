@@ -910,6 +910,29 @@ table.gt td.budchd-client:hover, table.gt td.budchd-builder:hover, table.gt td.b
 .ai-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:7998}
 .ai-overlay.show{display:block}
 @media(max-width:768px){.ai-panel{width:100%;right:-100%}}
+
+/* ── Task notes ── */
+.tc-notes-row{padding:6px 14px 2px;display:flex;flex-direction:column;gap:4px;border-top:1px solid var(--bdr)}
+.tc-notes-label{font-size:9px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:.05em}
+.tc-notes-inp{font-family:var(--font);font-size:12px;line-height:1.5;padding:6px 10px;
+  border:1px solid var(--bdr2);border-radius:8px;background:var(--sur2);
+  color:var(--txt);outline:none;resize:vertical;min-height:42px;width:100%}
+.tc-notes-inp:focus{border-color:var(--gold);background:var(--sur)}
+.tc-notes-inp::placeholder{color:var(--txt3)}
+
+.gantt-del-btn{opacity:0.5;font-size:12px;background:none;border:none;cursor:pointer;padding:1px 4px;border-radius:4px;color:#e53e3e;margin-right:2px;transition:opacity .15s,background .15s;flex-shrink:0;vertical-align:middle}
+.gantt-del-btn:hover{opacity:1;background:#fff0f0}
+
+/* ── Project files button ── */
+.proj-meta-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.proj-files-btn{
+  display:flex;align-items:center;gap:5px;
+  font-family:var(--font);font-size:12px;font-weight:700;
+  padding:5px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.2);
+  background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);
+  cursor:pointer;white-space:nowrap;transition:all .2s;flex-shrink:0
+}
+.proj-files-btn:hover{background:rgba(255,255,255,0.25);color:#fff;border-color:rgba(255,255,255,0.4)}
 </style>
 </head>
 <body>
@@ -935,7 +958,10 @@ table.gt td.budchd-client:hover, table.gt td.budchd-builder:hover, table.gt td.b
 <!-- Project Hero -->
 <div class="proj-hero">
   <input class="proj-name-input" id="proj-name-input" placeholder="Click to name project…" oninput="saveProjectName()">
-  <div class="proj-meta" id="proj-meta"></div>
+  <div class="proj-meta-row">
+    <div class="proj-meta" id="proj-meta"></div>
+    <button class="proj-files-btn" id="proj-files-btn" onclick="openProjectFiles()" title="Upload Documents & Photos">📁 Documents & Photos</button>
+  </div>
 </div>
 
 <!-- View Tabs -->
@@ -1241,6 +1267,13 @@ function updateProjHero(){
   const done=t.filter(x=>x.status==="Complete").length;
   const pct=t.length?Math.round(done/t.length*100):0;
   document.getElementById("proj-meta").textContent=t.length?`${t.length} tasks · ${pct}% done`:"No tasks yet";
+  var fb=document.getElementById("proj-files-btn");
+  if(fb){
+    fb.style.display=p?"flex":"none";
+    fb.style.background=p&&p.driveUrl?"#c6f6d5":"rgba(255,255,255,0.1)";
+    fb.style.color=p&&p.driveUrl?"#276749":"rgba(255,255,255,0.7)";
+    fb.title=p&&p.driveUrl?"Open Project Files":"Link a Google Drive folder";
+  }
 }
 
 // ── View switching ────────────────────────────────────────────────────────
@@ -1394,6 +1427,11 @@ function renderTasks(){
           </span>
         </div>
       </div>
+      <div class="tc-notes-row">
+        <div class="tc-notes-label">📝 Notes</div>
+        <textarea class="tc-notes-inp" placeholder="Add task notes…" rows="2"
+          onchange="updateTask(${idx},'notes',this.value)">${t.notes||''}</textarea>
+      </div>
       <div class="tc-foot">
         <select class="mini-sel" style="background:${sc.bg};color:${sc.tx}"
           onchange="updateTask(${idx},'status',this.value);renderTasks();renderDash()">${stOpts}</select>
@@ -1534,7 +1572,15 @@ function renderGantt(){
     nameInp.addEventListener("touchstart",ev=>ev.stopPropagation(),{passive:true});
     var depBtn=document.createElement("button");depBtn.className="dep-link-btn";depBtn.textContent="🔗";depBtn.title="Link tasks (dependency)";
     depBtn.addEventListener("click",function(ev){ev.stopPropagation();toggleDepLink(idx,depBtn);});
-    ntd.appendChild(dragHdl);ntd.appendChild(upBtn);ntd.appendChild(dnBtn);ntd.appendChild(depBtn);ntd.appendChild(dotSpan);ntd.appendChild(nameInp);
+    const delBtn=document.createElement("button");delBtn.className="gantt-del-btn";delBtn.textContent="🗑";delBtn.title="Delete task";
+    delBtn.addEventListener("click",function(ev){
+      ev.stopPropagation();
+      var t=tasks[idx];
+      if(!confirm('Delete task "'+t.name+'"?'))return;
+      tasks.splice(idx,1);
+      autoSave();renderGantt();
+    });
+    ntd.appendChild(delBtn);ntd.appendChild(dragHdl);ntd.appendChild(upBtn);ntd.appendChild(dnBtn);ntd.appendChild(depBtn);ntd.appendChild(dotSpan);ntd.appendChild(nameInp);
 
 
     // Col 2 – Status dropdown
@@ -1710,6 +1756,27 @@ function renderGantt(){
   });
   setupDrag();
   setTimeout(function(){ensureDepSVG();renderDepArrows();},50);
+  // Scroll to first scheduled task (or today if no tasks)
+  setTimeout(function(){
+    var wrap=document.querySelector(".gantt-wrap");
+    if(!wrap)return;
+    var tasks=proj()?.tasks||[];
+    var scheduled=tasks.filter(function(t){return t.so!=null;});
+    var targetOff;
+    if(scheduled.length){
+      // Find the earliest task start
+      targetOff=scheduled.reduce(function(min,t){return t.so<min?t.so:min;},scheduled[0].so);
+    } else {
+      // No tasks - scroll to today
+      targetOff=todayOff;
+    }
+    // Find the cell at that offset and scroll to it
+    var cell=wrap.querySelector('.gcell[data-day="'+targetOff+'"]');
+    if(cell){
+      // Offset by sticky columns width (~910px) so first task is visible
+      wrap.scrollLeft=Math.max(0,cell.offsetLeft-920);
+    }
+  },100);
 }
 function refreshGRow(t,tr){
   const ridx=parseInt(tr.dataset.idx);
@@ -1796,6 +1863,8 @@ function openAddTask(){
       <select id="mn-status">${["Complete","In Progress","Pending","On Hold","Delayed"].map(s=>`<option${s==="Pending"?" selected":""}>${s}</option>`).join("")}</select>
       <label>Critical path</label><select id="mn-crit"><option>No</option><option>Yes</option></select>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px"><div><label>💵 Client Price ($)</label><input type="number" id="mn-collect" placeholder="0.00" min="0" step="0.01" style="width:100%;padding:7px 10px;border:1px solid var(--bdr2);border-radius:8px;font-family:var(--font);font-size:13px;background:var(--sur);color:var(--txt);outline:none"></div><div><label>🔨 Builder Cost ($)</label><input type="number" id="mn-cost" placeholder="0.00" min="0" step="0.01" style="width:100%;padding:7px 10px;border:1px solid var(--bdr2);border-radius:8px;font-family:var(--font);font-size:13px;background:var(--sur);color:var(--txt);outline:none"></div></div>
+      <label style="display:block;margin-top:10px">📝 Notes</label>
+      <textarea id="mn-notes" rows="3" placeholder="Task notes, instructions, details…" style="width:100%;padding:8px 10px;border:1px solid var(--bdr2);border-radius:8px;font-family:var(--font);font-size:13px;background:var(--sur);color:var(--txt);outline:none;resize:vertical"></textarea>
       <div class="mbtns">
         <button onclick="closeModal()">Cancel</button>
         <button class="primary" onclick="addTask()">Add Task</button>
@@ -1819,6 +1888,7 @@ function addTask(){
     crit:document.getElementById("mn-crit").value,
     collect:parseFloat(document.getElementById("mn-collect").value)||0,
     cost:parseFloat(document.getElementById("mn-cost").value)||0,
+    notes:document.getElementById("mn-notes").value||"",
   });
   closeModal();renderCurrentView();
 }
@@ -3336,11 +3406,11 @@ function autoSave(){
 }
 function cloudSaveNow(){
   if(!cloudConfigured()||!currentUser)return;
-  sbClient.from("busybee_data").upsert({user_id:currentUser.id,team_id:"shared",data:JSON.stringify({projects:projects,activeProj:activeProj,activeView:activeView,globalSubs:globalSubs}),updated_at:new Date().toISOString()},{onConflict:"user_id"}).then(function(res){if(res.error)setCloudDot("error");else setCloudDot("ok");});
+  sbClient.from("busybee_data").upsert({user_id:currentUser.id,data:JSON.stringify({projects:projects,activeProj:activeProj,activeView:activeView,globalSubs:globalSubs}),updated_at:new Date().toISOString()},{onConflict:"user_id"}).then(function(res){if(res.error)setCloudDot("error");else setCloudDot("ok");});
 }
 function cloudLoadData(){
   if(!cloudConfigured()||!currentUser)return;
-  sbClient.from("busybee_data").select("data").eq("team_id","shared").order("updated_at",{ascending:false}).limit(1).single().then(function(res){
+  sbClient.from("busybee_data").select("data").eq("user_id",currentUser.id).single().then(function(res){
     if(res.data&&res.data.data){try{var state=JSON.parse(res.data.data);if(state.projects&&state.projects.length){projects=state.projects;activeProj=state.activeProj||projects[0].id;activeView="overview";if(state.globalSubs&&Array.isArray(state.globalSubs))globalSubs=state.globalSubs;autoSave();}}catch(e){}}
     renderProjBar();updateProjHero();renderCurrentView();showToast("Projects loaded");
   }).catch(function(){renderProjBar();updateProjHero();renderCurrentView();});
@@ -3506,6 +3576,58 @@ function saveAIKey(){
   closeModal();showToast("✓ AI key saved!");
 }
 (function(){var k=localStorage.getItem("bb_gemini_key");if(k)window.BUSYBEE_GEMINI_KEY=k;var m=localStorage.getItem("bb_gemini_model");if(m)window.BUSYBEE_GEMINI_MODEL=m;})();
+
+function openProjectFiles(){
+  var p=proj();if(!p)return;
+  if(p.driveUrl){
+    window.open(p.driveUrl,'_blank');
+  } else {
+    openSetDriveUrl();
+  }
+}
+
+function openSetDriveUrl(){
+  var p=proj();if(!p)return;
+  document.getElementById("modal-root").innerHTML=
+    '<div class="moverlay" onclick="if(event.target===this)closeModal()">'
+    +'<div class="msheet" style="max-width:460px"><div class="mhandle"></div>'
+    +'<h3 style="margin:0 0 6px">📁 Project Files Folder</h3>'
+    +'<p style="font-size:12px;color:var(--txt3);margin:0 0 16px">Link a Google Drive folder to this project. Everyone on your team can access it with one click.</p>'
+    +'<div style="background:var(--sur2);border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:12px;color:var(--txt2);line-height:1.6">'
+    +'<strong>How to get your Google Drive folder link:</strong><br>'
+    +'1. Go to <strong>drive.google.com</strong><br>'
+    +'2. Create a folder for this project<br>'
+    +'3. Right-click the folder → <strong>Share</strong> → <strong>Copy link</strong><br>'
+    +'4. Paste it below</div>'
+    +'<label style="font-size:10px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:6px">Google Drive Folder URL</label>'
+    +'<input id="drive-url-inp" type="url" style="width:100%;padding:9px 12px;border:1px solid var(--bdr2);border-radius:8px;font-family:var(--font);font-size:13px;background:var(--sur);color:var(--txt);outline:none;margin-bottom:6px" placeholder="https://drive.google.com/drive/folders/..." value="'+(p.driveUrl||"")+'">'
+    +'<p style="font-size:11px;color:var(--txt3);margin:0 0 16px">Works with Google Drive, Dropbox, OneDrive — any shareable link.</p>'
+    +'<div class="mbtns">'
+    +'<button onclick="closeModal()">Cancel</button>'
+    +(p.driveUrl?'<button onclick="removeDriveUrl()" style="background:#fed7d7;color:#742a2a;border:none;padding:8px 14px;border-radius:8px;font-family:var(--font);font-size:13px;cursor:pointer">Remove Link</button>':"")
+    +'<button class="primary" onclick="saveDriveUrl()">Save Link</button>'
+    +'</div></div></div>';
+  setTimeout(function(){var e=document.getElementById("drive-url-inp");if(e)e.focus();},80);
+}
+
+function saveDriveUrl(){
+  var p=proj();if(!p)return;
+  var url=(document.getElementById("drive-url-inp")||{}).value||"";
+  url=url.trim();
+  if(!url){closeModal();return;}
+  if(!url.startsWith("http")){alert("Please enter a valid URL starting with https://");return;}
+  p.driveUrl=url;
+  autoSave();closeModal();updateProjHero();
+  showToast("📁 Folder linked! Click Files to open.");
+}
+
+function removeDriveUrl(){
+  var p=proj();if(!p)return;
+  if(!confirm("Remove the folder link from this project?"))return;
+  delete p.driveUrl;
+  autoSave();closeModal();updateProjHero();
+  showToast("Folder link removed");
+}
 </script>
 </body>
 </html>
