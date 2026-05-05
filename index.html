@@ -933,6 +933,273 @@ table.gt td.budchd-client:hover, table.gt td.budchd-builder:hover, table.gt td.b
   cursor:pointer;white-space:nowrap;transition:all .2s;flex-shrink:0
 }
 .proj-files-btn:hover{background:rgba(255,255,255,0.25);color:#fff;border-color:rgba(255,255,255,0.4)}
+
+/* ── Project notification badge ── */
+.proj-notif-badge{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:18px;height:18px;padding:0 4px;
+  background:#e53e3e;color:#fff;
+  font-size:10px;font-weight:800;
+  border-radius:99px;
+  margin-left:4px;flex-shrink:0;
+  animation:badge-pop .3s cubic-bezier(.175,.885,.32,1.275);
+  box-shadow:0 1px 4px rgba(229,62,62,0.5);
+}
+@keyframes badge-pop{
+  0%{transform:scale(0)}
+  100%{transform:scale(1)}
+}
+
+
+
+/* ── Reminders Panel ── */
+.rem-panel{
+  position:fixed;right:-520px;top:0;bottom:0;width:500px;
+  background:var(--sur);
+  display:flex;flex-direction:column;
+  z-index:8100;
+  transition:right .3s cubic-bezier(.4,0,.2,1);
+  box-shadow:-4px 0 32px rgba(0,0,0,0.18);
+  border-left:1px solid var(--bdr);
+  overflow:hidden;
+}
+.rem-panel.open{right:0}
+.rem-panel-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 20px;
+  background:linear-gradient(135deg,#1a365d,#2c5282);
+  flex-shrink:0;gap:12px;
+}
+.rem-days-sel{
+  font-family:var(--font);font-size:12px;padding:6px 10px;
+  border:1px solid rgba(255,255,255,0.3);border-radius:8px;
+  background:rgba(255,255,255,0.1);color:#fff;outline:none;cursor:pointer;
+}
+.rem-days-sel option{color:var(--txt);background:var(--sur)}
+.rem-close-btn{
+  width:30px;height:30px;border-radius:8px;border:none;
+  background:rgba(255,255,255,0.15);color:#fff;
+  font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:background .15s;
+}
+.rem-close-btn:hover{background:rgba(255,255,255,0.3)}
+.rem-panel-body{
+  flex:1;
+  overflow-y:scroll;
+  -webkit-overflow-scrolling:touch;
+  padding:16px 16px 40px;
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+  min-height:0;
+}
+.rem-card{
+  background:var(--sur);border:1px solid var(--bdr);
+  border-radius:14px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.05);
+  transition:box-shadow .15s;
+  width:100%;
+  flex-shrink:0;
+}
+.rem-card:hover{box-shadow:0 4px 16px rgba(0,0,0,0.1)}
+.rem-card-head{
+  padding:14px 18px;
+  background:var(--sur2);
+  border-bottom:1px solid var(--bdr);
+}
+.rem-urgency{
+  font-size:11px;font-weight:800;padding:3px 10px;
+  border-radius:99px;color:#fff;letter-spacing:.04em;
+  display:inline-block;
+}
+.rem-next-badge{
+  font-size:11px;font-weight:700;padding:3px 10px;
+  border-radius:99px;background:#e9d8fd;color:#553c9a;
+  display:inline-block;
+}
+.rem-proj-tag{
+  font-size:11px;font-weight:600;color:var(--txt3);
+  background:var(--sur);padding:3px 10px;border-radius:99px;
+  border:1px solid var(--bdr2);display:inline-block;
+}
+.rem-task-name{
+  font-size:17px;font-weight:800;color:var(--txt);
+  margin-top:10px;
+  line-height:1.4;
+  word-break:break-word;
+  white-space:normal;
+}
+.rem-phase-tag{
+  font-size:12px;color:var(--txt3);margin-top:4px;
+}
+.rem-card-body{
+  padding:18px 20px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  height:auto;
+}
+.rem-row{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  font-size:14px;
+  line-height:1.6;
+  flex-wrap:wrap;
+}
+.rem-lbl{color:var(--txt3);font-size:12px;font-weight:600;min-width:100px;flex-shrink:0}
+.rem-val{color:var(--txt);font-weight:600;}
+.rem-materials{
+  font-size:13px;color:#7b341e;
+  background:#fffaf0;padding:12px 16px;
+  border-radius:10px;border:1px solid #f6ad55;
+  line-height:1.8;
+}
+.rem-notes{
+  font-size:13px;color:var(--txt2);
+  background:var(--sur2);padding:10px 14px;
+  border-radius:10px;line-height:1.6;
+}
+.rem-copy-btn{
+  font-family:var(--font);font-size:13px;font-weight:700;
+  padding:10px 18px;border-radius:9px;
+  border:1.5px solid var(--gold);
+  background:transparent;color:var(--gold);
+  cursor:pointer;transition:all .15s;
+  align-self:flex-start;margin-top:4px;
+}
+.rem-copy-btn:hover{background:var(--gold);color:#fff}
+.rem-empty{
+  flex:1;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;padding:40px 20px;color:var(--txt2);
+}
+.rem-ov{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,0.4);z-index:8099;
+}
+.rem-ov.show{display:block}
+@media(max-width:768px){.rem-panel{width:100%;right:-100%}}
+
+/* ── Reminder project groups ── */
+.rem-proj-group{display:flex;flex-direction:column;gap:10px;flex-shrink:0}
+.rem-proj-group-header{
+  font-size:13px;font-weight:800;color:var(--txt2);
+  padding:8px 14px;
+  background:linear-gradient(90deg,var(--sur2),transparent);
+  border-left:4px solid var(--gold);
+  border-radius:0 8px 8px 0;
+  display:flex;align-items:center;justify-content:space-between;
+  letter-spacing:0.01em;
+}
+.rem-proj-count{
+  font-size:11px;font-weight:600;color:var(--txt3);
+  background:var(--sur);padding:2px 8px;
+  border-radius:99px;border:1px solid var(--bdr2);
+}
+
+/* ── Reminders collapse + done ── */
+.rem-proj-tasks{display:flex;flex-direction:column;gap:10px;padding-top:8px}
+.rem-proj-all-done{opacity:0.7;background:linear-gradient(90deg,#c6f6d5,transparent)!important;border-left-color:#38a169!important}
+.rem-proj-done-count{font-size:11px;color:#276749;font-weight:700;background:#c6f6d5;padding:2px 8px;border-radius:99px}
+.rem-collapse-icon{font-size:11px;color:var(--txt3);flex-shrink:0;transition:transform .2s}
+.rem-done-btn{
+  font-family:var(--font);font-size:12px;font-weight:700;
+  padding:7px 14px;border-radius:8px;
+  border:1.5px solid var(--bdr2);
+  background:var(--sur2);color:var(--txt2);
+  cursor:pointer;transition:all .15s;
+}
+.rem-done-btn:hover{border-color:#38a169;color:#276749;background:#f0fff4}
+.rem-done-btn.rem-done-active{background:#c6f6d5;border-color:#38a169;color:#276749}
+.rem-ctrl-btn{
+  font-family:var(--font);font-size:11px;font-weight:600;
+  padding:5px 12px;border-radius:7px;
+  border:1px solid var(--bdr2);background:var(--sur2);
+  color:var(--txt2);cursor:pointer;transition:all .15s;
+}
+.rem-ctrl-btn:hover{background:var(--sur);border-color:var(--gold);color:var(--gold)}
+.rem-ctrl-clear{border-color:#fed7d7;color:#c53030}
+.rem-ctrl-clear:hover{background:#fff0f0;border-color:#c53030}
+
+/* ══ Project Intelligence Panel ══ */
+.intel-btn{transition:all .2s}
+.intel-panel{
+  position:fixed;right:-560px;top:0;bottom:0;width:540px;
+  background:var(--sur);
+  display:flex;flex-direction:column;
+  z-index:8200;
+  transition:right .3s cubic-bezier(.4,0,.2,1);
+  box-shadow:-4px 0 32px rgba(0,0,0,0.2);
+  border-left:1px solid var(--bdr);
+}
+.intel-panel.open{right:0}
+.intel-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 22px;
+  background:linear-gradient(135deg,#2d1b69,#553c9a);
+  flex-shrink:0;
+}
+.intel-title{font-size:18px;font-weight:800;color:#fff}
+.intel-subtitle{font-size:12px;color:rgba(255,255,255,0.6);margin-top:2px}
+.intel-close-btn{
+  width:30px;height:30px;border-radius:8px;border:none;
+  background:rgba(255,255,255,0.15);color:#fff;font-size:18px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:background .15s;
+}
+.intel-close-btn:hover{background:rgba(255,255,255,0.3)}
+.intel-summary-row{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:1px;background:var(--bdr);
+  flex-shrink:0;border-bottom:1px solid var(--bdr);
+}
+.intel-sum-card{
+  background:var(--sur2);padding:12px 8px;text-align:center;
+}
+.intel-sum-val{font-size:22px;font-weight:800;color:var(--txt);line-height:1}
+.intel-sum-lbl{font-size:10px;color:var(--txt3);margin-top:4px;text-transform:uppercase;letter-spacing:.04em}
+.intel-body{
+  flex:1;overflow-y:auto;
+  padding:16px;
+  display:flex;flex-direction:column;gap:16px;
+  min-height:0;
+}
+.intel-section{display:flex;flex-direction:column;gap:10px}
+.intel-section-title{
+  font-size:13px;font-weight:800;color:var(--txt2);
+  text-transform:uppercase;letter-spacing:.06em;
+  padding-bottom:6px;
+  border-bottom:2px solid var(--bdr);
+}
+.intel-sugg-card{
+  padding:12px 16px;border-radius:10px;
+  border-left:4px solid var(--gold);
+}
+.intel-sugg-title{font-size:13px;font-weight:700;color:var(--txt);margin-bottom:4px}
+.intel-sugg-body{font-size:12px;color:var(--txt2);line-height:1.6}
+.intel-ai-btn{
+  font-family:var(--font);font-size:13px;font-weight:700;
+  padding:10px 20px;border-radius:10px;
+  background:linear-gradient(135deg,#553c9a,#6b46c1);
+  color:#fff;border:none;cursor:pointer;
+  transition:opacity .15s;align-self:flex-start;
+  box-shadow:0 2px 12px rgba(85,60,154,0.35);
+}
+.intel-ai-btn:hover{opacity:.85}
+.intel-table-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--bdr)}
+.intel-table{width:100%;border-collapse:collapse;font-size:12px}
+.intel-table thead tr{background:var(--sur2)}
+.intel-table th{
+  padding:8px 12px;text-align:left;
+  font-size:10px;font-weight:700;color:var(--txt3);
+  text-transform:uppercase;letter-spacing:.05em;
+  border-bottom:1px solid var(--bdr);
+}
+.intel-table tbody tr{border-bottom:1px solid var(--bdr)}
+.intel-table tbody tr:last-child{border-bottom:none}
+.intel-table tbody tr:hover{background:var(--sur2)}
+@media(max-width:768px){.intel-panel{width:100%;right:-100%}}
 </style>
 </head>
 <body>
@@ -941,6 +1208,8 @@ table.gt td.budchd-client:hover, table.gt td.budchd-builder:hover, table.gt td.b
   <div class="logo">🐝</div>
   <div class="brand">BusyBee Schedule</div>
   <div class="topbar-actions">
+    <button class="tbtn intel-btn" onclick="openIntelligence()" id="intel-btn" title="Project Intelligence">🧠 Intelligence</button>
+    <button class="tbtn notif-topbar-btn" onclick="openReminders()" id="reminders-btn">🔔 Reminders</button>
     <button class="tbtn gold" onclick="openAddTask()">+ Task</button>
     <button class="tbtn" onclick="exportCSV()">↓ CSV</button>
     <button class="tbtn pdf-btn" onclick="exportToPDF()" title="Export to PDF">📄 PDF</button>
@@ -1184,6 +1453,18 @@ function renderProjBar(){
     inp.onchange=e=>{p.name=e.target.value;renderProjBar();updateProjHero()};
     inp.onclick=e=>{if(p.id===activeProj)e.stopPropagation()};
     tab.appendChild(inp);
+    // Notification badge for unread notes
+    var lastSeen=localStorage.getItem("bb_notes_seen_"+p.id)||"0";
+    var taskNotes=(p.tasks||[]).filter(function(t){return t.notes&&t.notes.trim()&&t.notedAt&&t.notedAt>lastSeen;});
+    var projNotes=(p.notes||[]).filter(function(n){return n.ts&&n.ts>lastSeen;});
+    var unread=taskNotes.length+projNotes.length;
+    if(unread>0){
+      var badge=document.createElement("span");
+      badge.className="proj-notif-badge";
+      badge.textContent=unread>9?"9+":unread;
+      badge.title=unread+" new note"+(unread>1?"s":"");
+      tab.appendChild(badge);
+    }
     if(projects.length>1){
       const x=document.createElement("button");x.className="proj-tab-close";x.textContent="×";
       x.onclick=e=>{e.stopPropagation();removeProj(p.id)};
@@ -1282,7 +1563,9 @@ function switchView(v,el){
   document.querySelectorAll(".view").forEach(x=>x.classList.remove("active"));
   el.classList.add("active");
   document.getElementById("view-"+v).classList.add("active");
-  activeView=v;renderCurrentView();
+  activeView=v;
+  if(v==="tasks"||v==="notes")setTimeout(function(){markNotesSeen(activeProj);},100);
+  renderCurrentView();
 }
 function renderCurrentView(){
   if(activeView==="overview")renderOverview();
@@ -1430,7 +1713,7 @@ function renderTasks(){
       <div class="tc-notes-row">
         <div class="tc-notes-label">📝 Notes</div>
         <textarea class="tc-notes-inp" placeholder="Add task notes…" rows="2"
-          onchange="updateTask(${idx},'notes',this.value)">${t.notes||''}</textarea>
+          onchange="updateTaskNote(${idx},this.value)">${t.notes||''}</textarea>
       </div>
       <div class="tc-foot">
         <select class="mini-sel" style="background:${sc.bg};color:${sc.tx}"
@@ -1981,6 +2264,8 @@ renderProjBar();
 updateProjHero();
 renderCurrentView();
 setTimeout(initCloud, 100);
+setTimeout(checkReminders, 500);
+setTimeout(updateIntelBadge, 600);
 // Show auto-save status
 setTimeout(()=>showToast("✓ Auto-save is ON — your work saves automatically",3500),800);
 
@@ -3401,6 +3686,7 @@ function updateUserBar(){
   ub.innerHTML='<div class="user-avatar">'+initials+'</div><span class="user-email">'+currentUser.email+'</span><button class="user-signout" onclick="signOut()">Sign Out</button>';
 }
 function autoSave(){
+  setTimeout(checkReminders,200);
   try{localStorage.setItem(STORAGE_KEY,JSON.stringify({projects:projects,activeProj:activeProj,activeView:activeView,globalSubs:globalSubs,savedAt:new Date().toISOString()}));}catch(e){}
   if(cloudConfigured()&&currentUser){clearTimeout(cloudSaveTimer);cloudSaveTimer=setTimeout(cloudSaveNow,800);setCloudDot("saving");}
 }
@@ -3627,6 +3913,648 @@ function removeDriveUrl(){
   delete p.driveUrl;
   autoSave();closeModal();updateProjHero();
   showToast("Folder link removed");
+}
+
+function markNotesSeen(projId){
+  var id=projId||activeProj;
+  if(!id)return;
+  localStorage.setItem("bb_notes_seen_"+id, new Date().toISOString());
+  renderProjBar(); // refresh badge
+}
+
+// Track when a task note is added
+function updateTaskNote(idx, val){
+  var tasks=proj()?.tasks;if(!tasks||!tasks[idx])return;
+  tasks[idx].notes=val;
+  if(val&&val.trim()){
+    tasks[idx].notedAt=new Date().toISOString();
+  }
+  autoSave();
+}
+
+function getUpcomingTasks(daysAhead){
+  daysAhead = daysAhead || parseInt(localStorage.getItem("bb_reminder_days")||"7");
+  var results=[];
+  projects.forEach(function(p){
+    var tasks=p.tasks||[];
+    var mats=p.materials||[];
+    tasks.forEach(function(t,idx){
+      if(t.so==null||t.status==="Complete")return;
+      var daysUntil=t.so-todayOff;
+      if(daysUntil>=0&&daysUntil<=daysAhead){
+        // Find materials linked to this task
+        var taskMats=mats.filter(function(m){
+          return m.task&&m.task.toLowerCase()===t.name.toLowerCase()&&m.status==="To Order";
+        });
+        results.push({
+          project:p.name,
+          task:t.name,
+          phase:t.phase,
+          who:t.who,
+          daysUntil:daysUntil,
+          startDate:o2d(t.so).toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"}),
+          status:t.status,
+          materials:taskMats,
+          notes:t.notes||"",
+          collect:t.collect||0,
+          cost:t.cost||0
+        });
+      }
+      // Also warn about tasks currently in progress with upcoming dependent tasks
+      if(t.status==="In Progress"&&t.eo!=null){
+        var daysUntilEnd=t.eo-todayOff;
+        if(daysUntilEnd>=0&&daysUntilEnd<=daysAhead){
+          // Find tasks that start after this one ends
+          var nextTasks=tasks.filter(function(nt){
+            return nt.so===t.eo&&nt.status!=="Complete";
+          });
+          nextTasks.forEach(function(nt){
+            var ntMats=mats.filter(function(m){
+              return m.task&&m.task.toLowerCase()===nt.name.toLowerCase()&&m.status==="To Order";
+            });
+            results.push({
+              project:p.name,
+              task:nt.name,
+              phase:nt.phase,
+              who:nt.who,
+              daysUntil:daysUntilEnd,
+              startDate:o2d(nt.so).toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"}),
+              status:"Upcoming after: "+t.name,
+              materials:ntMats,
+              notes:nt.notes||"",
+              collect:nt.collect||0,
+              cost:nt.cost||0,
+              isNext:true
+            });
+          });
+        }
+      }
+    });
+  });
+  // Sort by daysUntil
+  results.sort(function(a,b){return a.daysUntil-b.daysUntil;});
+  return results;
+}
+
+function openReminders(){
+  var days=parseInt(localStorage.getItem("bb_reminder_days")||"7");
+  var upcoming=getUpcomingTasks(days);
+  var dismissed=JSON.parse(localStorage.getItem("bb_rem_dismissed")||"{}");
+  var collapsed=JSON.parse(localStorage.getItem("bb_rem_collapsed")||"{}");
+
+  // Group by project
+  var grouped={};
+  upcoming.forEach(function(r){
+    if(!grouped[r.project])grouped[r.project]=[];
+    grouped[r.project].push(r);
+  });
+  Object.keys(grouped).forEach(function(pn){
+    grouped[pn].sort(function(a,b){return a.daysUntil-b.daysUntil;});
+  });
+  var projNames=Object.keys(grouped).sort();
+
+  var panel=document.getElementById("reminders-panel");
+  if(!panel){
+    panel=document.createElement("div");
+    panel.id="reminders-panel";
+    panel.className="rem-panel";
+    document.body.appendChild(panel);
+  }
+
+  var daysOpts=[3,7,14,30].map(function(d){
+    return '<option value="'+d+'"'+(d===days?' selected':'')+'>'+d+' days ahead</option>';
+  }).join("");
+
+  var cards="";
+  if(upcoming.length){
+    projNames.forEach(function(projName){
+      var projTasks=grouped[projName];
+      var projKey="proj_"+projName.replace(/\s+/g,"_");
+      var isCollapsed=collapsed[projKey];
+      var projDismissed=0;
+
+      var taskCards=projTasks.map(function(r){
+        var remKey=projName+"_"+r.task+"_"+r.startDate;
+        var isDismissed=dismissed[remKey];
+        if(isDismissed)projDismissed++;
+        var urgColor=r.daysUntil===0?"#e53e3e":r.daysUntil<=3?"#dd6b20":r.daysUntil<=7?"#d97706":"#276749";
+        var urgLabel=r.daysUntil===0?"TODAY":r.daysUntil===1?"TOMORROW":r.daysUntil+" days";
+        var matsHtml=r.materials.length
+          ?'<div class="rem-materials">🛒 <strong>Materials to order:</strong><br>'+r.materials.map(function(m){return '• '+m.name;}).join('<br>')+'</div>'
+          :"";
+        var notesHtml=r.notes?'<div class="rem-notes">📝 '+r.notes+'</div>':"";
+        var nextBadge=r.isNext?'<span class="rem-next-badge">⚡ Next up</span>':"";
+        var dismissedStyle=isDismissed?'opacity:0.45;background:#f0fff4;':'';
+        var checkIcon=isDismissed?'✅':'☐';
+        var checkLabel=isDismissed?'Done':'Mark Done';
+        return '<div class="rem-card" style="'+dismissedStyle+'">'
+          +'<div class="rem-card-head">'
+          +'<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">'
+          +'<span class="rem-urgency" style="background:'+(isDismissed?"#68d391":urgColor)+'">'+( isDismissed?"✓ Done":urgLabel)+'</span>'
+          +nextBadge
+          +'</div>'
+          +'<div class="rem-task-name">'+r.task+'</div>'
+          +'<div class="rem-phase-tag">'+r.phase+'</div>'
+          +'</div>'
+          +'<div class="rem-card-body">'
+          +'<div class="rem-row"><span class="rem-lbl">📅 Start date</span><span class="rem-val">'+r.startDate+'</span></div>'
+          +(r.who&&r.who!=="TBD"?'<div class="rem-row"><span class="rem-lbl">👷 Assigned to</span><span class="rem-val">'+r.who+'</span></div>':"")
+          +(r.status!=="Pending"?'<div class="rem-row"><span class="rem-lbl">📊 Status</span><span class="rem-val">'+r.status+'</span></div>':"")
+          +(r.collect||r.cost?'<div class="rem-row"><span class="rem-lbl">💵 / 🔨</span><span class="rem-val">$'+Number(r.collect||0).toLocaleString()+' / $'+Number(r.cost||0).toLocaleString()+'</span></div>':"")
+          +matsHtml+notesHtml
+          +'<div style="display:flex;gap:8px;margin-top:4px;flex-wrap:wrap">'
+          +'<button class="rem-done-btn'+(isDismissed?" rem-done-active":"")+'" onclick="toggleReminderDone(\''+remKey.replace(/'/g,"\\'")+'\')">'
+          +checkIcon+' '+checkLabel
+          +'</button>'
+          +'<button class="rem-copy-btn" onclick="copyReminderText('+JSON.stringify(r).replace(/"/g,"&quot;")+')" >📋 Copy</button>'
+          +'</div>'
+          +'</div></div>';
+      }).join("");
+
+      var allDone=projDismissed===projTasks.length;
+      var doneCount=projDismissed>0?' <span class="rem-proj-done-count">'+projDismissed+'/'+projTasks.length+' done</span>':"";
+      var collapseIcon=isCollapsed?'▶':'▼';
+
+      cards+='<div class="rem-proj-group" id="'+projKey+'">'
+        +'<div class="rem-proj-group-header'+(allDone?" rem-proj-all-done":"")+'" onclick="toggleRemProj(\''+projKey+'\')" style="cursor:pointer">'
+        +'<div style="display:flex;align-items:center;gap:8px">'
+        +'<span class="rem-collapse-icon">'+collapseIcon+'</span>'
+        +(allDone?'✅ ':'📁 ')+'<strong>'+projName+'</strong>'
+        +'<span class="rem-proj-count">'+projTasks.length+' task'+(projTasks.length!==1?'s':'')+'</span>'
+        +doneCount
+        +'</div>'
+        +'</div>'
+        +'<div class="rem-proj-tasks" id="'+projKey+'_tasks" style="'+(isCollapsed?"display:none":"")+'">'
+        +taskCards
+        +'</div>'
+        +'</div>';
+    });
+  } else {
+    cards='<div class="rem-empty"><div style="font-size:48px;margin-bottom:12px">✅</div><h3 style="margin:0 0 8px;color:var(--txt)">All clear!</h3><p style="color:var(--txt3)">No upcoming tasks in the next '+days+' days.</p></div>';
+  }
+
+  panel.innerHTML=
+    '<div class="rem-panel-header">'
+    +'<div>'
+    +'<div style="font-size:18px;font-weight:800;color:#fff">🔔 Task Reminders</div>'
+    +'<div style="font-size:12px;color:rgba(255,255,255,0.6);margin-top:2px">'+upcoming.length+' task'+(upcoming.length!==1?'s':'')+' · '+projNames.length+' project'+(projNames.length!==1?'s':'')+'</div>'
+    +'</div>'
+    +'<div style="display:flex;align-items:center;gap:8px">'
+    +'<select class="rem-days-sel" onchange="localStorage.setItem(\'bb_reminder_days\',this.value);openReminders()">'+daysOpts+'</select>'
+    +'<button class="rem-close-btn" onclick="closeReminders()">×</button>'
+    +'</div></div>'
+    +'<div style="padding:8px 16px;border-bottom:1px solid var(--bdr);display:flex;gap:8px;flex-shrink:0">'
+    +'<button class="rem-ctrl-btn" onclick="collapseAllProj(true)">Collapse All</button>'
+    +'<button class="rem-ctrl-btn" onclick="collapseAllProj(false)">Expand All</button>'
+    +'<button class="rem-ctrl-btn rem-ctrl-clear" onclick="clearAllDone()">Clear Done</button>'
+    +'</div>'
+    +'<div class="rem-panel-body">'+cards+'</div>';
+
+  panel.classList.add("open");
+  var ov=document.getElementById("rem-overlay");
+  if(!ov){ov=document.createElement("div");ov.id="rem-overlay";ov.className="rem-ov";ov.onclick=closeReminders;document.body.appendChild(ov);}
+  ov.classList.add("show");
+}
+
+function toggleRemProj(projKey){
+  var collapsed=JSON.parse(localStorage.getItem("bb_rem_collapsed")||"{}");
+  collapsed[projKey]=!collapsed[projKey];
+  localStorage.setItem("bb_rem_collapsed",JSON.stringify(collapsed));
+  var icon=document.querySelector('#'+projKey+' .rem-collapse-icon');
+  var tasks=document.getElementById(projKey+'_tasks');
+  if(tasks){
+    var isNowCollapsed=collapsed[projKey];
+    tasks.style.display=isNowCollapsed?"none":"";
+    if(icon)icon.textContent=isNowCollapsed?'▶':'▼';
+  }
+}
+
+function toggleReminderDone(remKey){
+  var dismissed=JSON.parse(localStorage.getItem("bb_rem_dismissed")||"{}");
+  dismissed[remKey]=!dismissed[remKey];
+  if(!dismissed[remKey])delete dismissed[remKey];
+  localStorage.setItem("bb_rem_dismissed",JSON.stringify(dismissed));
+  openReminders(); // refresh panel
+}
+
+function collapseAllProj(collapse){
+  var upcoming=getUpcomingTasks(parseInt(localStorage.getItem("bb_reminder_days")||"7"));
+  var grouped={};
+  upcoming.forEach(function(r){grouped[r.project]=true;});
+  var collapsed={};
+  if(collapse){Object.keys(grouped).forEach(function(p){collapsed["proj_"+p.replace(/\s+/g,"_")]=true;});}
+  localStorage.setItem("bb_rem_collapsed",JSON.stringify(collapsed));
+  openReminders();
+}
+
+function clearAllDone(){
+  if(!confirm("Clear all 'Done' marks and start fresh?"))return;
+  localStorage.removeItem("bb_rem_dismissed");
+  openReminders();
+}
+
+
+function closeReminders(){
+  var panel=document.getElementById("reminders-panel");
+  var ov=document.getElementById("rem-overlay");
+  if(panel)panel.classList.remove("open");
+  if(ov)ov.classList.remove("show");
+}
+
+function copyReminderText(r){
+  var text="🔔 Task Reminder\n\n";
+  text+="Project: "+r.project+"\n";
+  text+="Task: "+r.task+" ("+r.phase+")\n";
+  text+="Starts: "+r.startDate+(r.daysUntil===0?" — TODAY":r.daysUntil===1?" — TOMORROW":" — in "+r.daysUntil+" days")+"\n";
+  if(r.who&&r.who!=="TBD")text+="Assigned to: "+r.who+"\n";
+  if(r.materials&&r.materials.length)text+="\n🛒 Materials to order:\n"+r.materials.map(function(m){return "  - "+m.name;}).join("\n")+"\n";
+  if(r.notes)text+="\n📝 Notes: "+r.notes+"\n";
+  navigator.clipboard.writeText(text).then(function(){showToast("✓ Reminder copied — paste into SMS or email!");});
+}
+
+// Auto-check on app load and update bell badge
+function checkReminders(){
+  var days=parseInt(localStorage.getItem("bb_reminder_days")||"7");
+  var upcoming=getUpcomingTasks(days);
+  var btn=document.getElementById("reminders-btn");
+  if(!btn)return;
+  // Count tasks with materials to order or same-day/tomorrow tasks
+  var urgent=upcoming.filter(function(r){return r.daysUntil<=3||r.materials.length>0;});
+  if(urgent.length>0){
+    btn.style.background="linear-gradient(135deg,#e53e3e,#c53030)";
+    btn.style.borderColor="transparent";
+    btn.style.color="#fff";
+    btn.innerHTML="🔔 Reminders <span style='background:rgba(255,255,255,0.3);border-radius:99px;padding:1px 6px;font-size:10px;font-weight:800;margin-left:4px'>"+urgent.length+"</span>";
+  } else if(upcoming.length>0){
+    btn.style.background="linear-gradient(135deg,#d97706,#b45309)";
+    btn.style.borderColor="transparent";
+    btn.style.color="#fff";
+    btn.innerHTML="🔔 Reminders <span style='background:rgba(255,255,255,0.3);border-radius:99px;padding:1px 6px;font-size:10px;font-weight:800;margin-left:4px'>"+upcoming.length+"</span>";
+  } else {
+    btn.style.background="";btn.style.borderColor="";btn.style.color="";
+    btn.innerHTML="🔔 Reminders";
+  }
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// PROJECT INTELLIGENCE ENGINE
+// Tracks patterns, learns from history, suggests improvements
+// ══════════════════════════════════════════════════════════════════════════
+
+function collectIntelligenceData(){
+  var intel = {
+    totalProjects: projects.length,
+    totalTasks: 0,
+    completedTasks: 0,
+    delayedTasks: 0,
+    overdueTasks: 0,
+    phaseStats: {},       // avg duration per phase
+    subStats: {},         // sub usage frequency + completion rate
+    budgetStats: {},      // budget accuracy per phase
+    taskPatterns: [],     // completed tasks with actual vs planned duration
+    phaseSequences: {},   // which phases follow which
+    commonIssues: [],     // tasks that were delayed
+  };
+
+  projects.forEach(function(p){
+    var tasks = p.tasks||[];
+    intel.totalTasks += tasks.length;
+
+    tasks.forEach(function(t, idx){
+      if(t.status==="Complete") intel.completedTasks++;
+      if(t.status==="Delayed") intel.delayedTasks++;
+
+      // Check overdue (past end date, not complete)
+      if(t.eo!=null && t.eo<todayOff && t.status!=="Complete") intel.overdueTasks++;
+
+      // Phase stats
+      if(t.phase){
+        if(!intel.phaseStats[t.phase]) intel.phaseStats[t.phase]={count:0,totalDays:0,completed:0,delayed:0,totalCollect:0,totalCost:0};
+        var dur = (t.so!=null&&t.eo!=null)?t.eo-t.so:(t.dur||7);
+        intel.phaseStats[t.phase].count++;
+        intel.phaseStats[t.phase].totalDays += dur;
+        if(t.status==="Complete") intel.phaseStats[t.phase].completed++;
+        if(t.status==="Delayed") intel.phaseStats[t.phase].delayed++;
+        if(t.collect) intel.phaseStats[t.phase].totalCollect += t.collect;
+        if(t.cost) intel.phaseStats[t.phase].totalCost += t.cost;
+      }
+
+      // Sub stats
+      if(t.who && t.who!=="TBD"){
+        if(!intel.subStats[t.who]) intel.subStats[t.who]={tasks:0,completed:0,delayed:0,phases:{}};
+        intel.subStats[t.who].tasks++;
+        if(t.status==="Complete") intel.subStats[t.who].completed++;
+        if(t.status==="Delayed") intel.subStats[t.who].delayed++;
+        if(t.phase){
+          intel.subStats[t.who].phases[t.phase] = (intel.subStats[t.who].phases[t.phase]||0)+1;
+        }
+      }
+
+      // Phase sequences (what follows what)
+      if(idx>0 && tasks[idx-1].phase && t.phase && tasks[idx-1].phase!==t.phase){
+        var seq = tasks[idx-1].phase+" → "+t.phase;
+        intel.phaseSequences[seq] = (intel.phaseSequences[seq]||0)+1;
+      }
+    });
+  });
+
+  return intel;
+}
+
+function generateSuggestions(intel){
+  var suggestions = [];
+
+  // 1. Overdue tasks warning
+  if(intel.overdueTasks>0){
+    suggestions.push({
+      type:"warning",icon:"⚠️",
+      title: intel.overdueTasks+" task"+(intel.overdueTasks>1?"s are":" is")+" overdue",
+      body: "Review and update their status or reschedule.",
+      priority:1
+    });
+  }
+
+  // 2. Delayed tasks pattern
+  if(intel.delayedTasks>2){
+    suggestions.push({
+      type:"insight",icon:"📊",
+      title: "High delay rate detected",
+      body: intel.delayedTasks+" tasks marked Delayed. Consider adding buffer days to future tasks.",
+      priority:2
+    });
+  }
+
+  // 3. Phase duration insights
+  Object.keys(intel.phaseStats).forEach(function(phase){
+    var ps = intel.phaseStats[phase];
+    if(ps.count<2)return;
+    var avgDays = Math.round(ps.totalDays/ps.count);
+    var delayRate = Math.round(ps.delayed/ps.count*100);
+    if(delayRate>30){
+      suggestions.push({
+        type:"insight",icon:"⏱",
+        title: phase+" phase has a "+delayRate+"% delay rate",
+        body: "Average task duration: "+avgDays+" days. Consider scheduling "+Math.ceil(avgDays*1.2)+" days for future "+phase+" tasks.",
+        priority:2
+      });
+    }
+    // Budget accuracy
+    if(ps.totalCollect>0 && ps.totalCost>0){
+      var margin = Math.round((ps.totalCollect-ps.totalCost)/ps.totalCollect*100);
+      if(margin<10){
+        suggestions.push({
+          type:"money",icon:"💰",
+          title: phase+" phase has thin margins ("+margin+"%)",
+          body: "Total collected: $"+ps.totalCollect.toLocaleString()+", Cost: $"+ps.totalCost.toLocaleString()+". Review pricing for future "+phase+" work.",
+          priority:3
+        });
+      }
+    }
+  });
+
+  // 4. Sub performance insights
+  Object.keys(intel.subStats).forEach(function(sub){
+    var ss = intel.subStats[sub];
+    if(ss.tasks<3)return;
+    var delayRate = Math.round(ss.delayed/ss.tasks*100);
+    var completionRate = Math.round(ss.completed/ss.tasks*100);
+    // Find their best phase
+    var bestPhase = Object.keys(ss.phases).sort(function(a,b){return ss.phases[b]-ss.phases[a];})[0];
+    if(delayRate>40){
+      suggestions.push({
+        type:"sub",icon:"👷",
+        title: sub+" has a "+delayRate+"% delay rate",
+        body: "Out of "+ss.tasks+" tasks, "+ss.delayed+" were delayed. Consider discussing scheduling with them.",
+        priority:2
+      });
+    } else if(completionRate>80 && ss.tasks>=5){
+      suggestions.push({
+        type:"positive",icon:"⭐",
+        title: sub+" is your top performer",
+        body: completionRate+"% completion rate across "+ss.tasks+" tasks. Best used for: "+bestPhase+".",
+        priority:4
+      });
+    }
+  });
+
+  // 5. Completion rate
+  if(intel.totalTasks>0){
+    var compRate = Math.round(intel.completedTasks/intel.totalTasks*100);
+    if(compRate>70){
+      suggestions.push({
+        type:"positive",icon:"🎯",
+        title: "Great progress! "+compRate+"% of all tasks complete",
+        body: intel.completedTasks+" of "+intel.totalTasks+" tasks done across "+intel.totalProjects+" projects.",
+        priority:5
+      });
+    }
+  }
+
+  // 6. No budget data warning
+  var tasksWithBudget = 0;
+  projects.forEach(function(p){(p.tasks||[]).forEach(function(t){if(t.collect||t.cost)tasksWithBudget++;});});
+  if(intel.totalTasks>5 && tasksWithBudget<intel.totalTasks*0.5){
+    suggestions.push({
+      type:"tip",icon:"💡",
+      title: "Add budget data to more tasks",
+      body: "Only "+tasksWithBudget+" of "+intel.totalTasks+" tasks have pricing. Add Client Price & Builder Cost to track profitability.",
+      priority:3
+    });
+  }
+
+  // Sort by priority
+  suggestions.sort(function(a,b){return a.priority-b.priority;});
+  return suggestions;
+}
+
+function openIntelligence(){
+  var panel = document.getElementById("intel-panel");
+  if(!panel){
+    panel = document.createElement("div");
+    panel.id = "intel-panel";
+    panel.className = "intel-panel";
+    document.body.appendChild(panel);
+  }
+
+  var intel = collectIntelligenceData();
+  var suggestions = generateSuggestions(intel);
+
+  // Phase stats table
+  var phaseRows = Object.keys(intel.phaseStats).map(function(phase){
+    var ps = intel.phaseStats[phase];
+    var avg = Math.round(ps.totalDays/ps.count);
+    var delayRate = Math.round(ps.delayed/ps.count*100);
+    var margin = ps.totalCollect>0?Math.round((ps.totalCollect-ps.totalCost)/ps.totalCollect*100):null;
+    var delayColor = delayRate>30?"#c53030":delayRate>15?"#c05621":"#276749";
+    return '<tr>'
+      +'<td style="font-weight:600;padding:8px 12px">'+phase+'</td>'
+      +'<td style="text-align:center;padding:8px 6px">'+ps.count+'</td>'
+      +'<td style="text-align:center;padding:8px 6px">'+avg+'d</td>'
+      +'<td style="text-align:center;padding:8px 6px;color:'+delayColor+';font-weight:700">'+delayRate+'%</td>'
+      +'<td style="text-align:center;padding:8px 6px;color:'+(margin!==null?(margin<10?"#c53030":margin<20?"#c05621":"#276749"):"var(--txt3)")+';font-weight:600">'+(margin!==null?margin+'%':'—')+'</td>'
+      +'</tr>';
+  }).join("");
+
+  // Sub stats table
+  var subRows = Object.keys(intel.subStats)
+    .filter(function(s){return intel.subStats[s].tasks>0;})
+    .sort(function(a,b){return intel.subStats[b].tasks-intel.subStats[a].tasks;})
+    .slice(0,8)
+    .map(function(sub){
+      var ss = intel.subStats[sub];
+      var comp = Math.round(ss.completed/ss.tasks*100);
+      var bestPhase = Object.keys(ss.phases).sort(function(a,b){return ss.phases[b]-ss.phases[a];})[0]||"—";
+      var compColor = comp>80?"#276749":comp>50?"#c05621":"#c53030";
+      return '<tr>'
+        +'<td style="font-weight:600;padding:8px 12px">'+sub+'</td>'
+        +'<td style="text-align:center;padding:8px 6px">'+ss.tasks+'</td>'
+        +'<td style="text-align:center;padding:8px 6px;color:'+compColor+';font-weight:700">'+comp+'%</td>'
+        +'<td style="padding:8px 6px;font-size:11px;color:var(--txt3)">'+bestPhase+'</td>'
+        +'</tr>';
+    }).join("");
+
+  // Summary cards
+  var compPct = intel.totalTasks?Math.round(intel.completedTasks/intel.totalTasks*100):0;
+
+  var suggCards = suggestions.length ? suggestions.map(function(s){
+    var bgMap={warning:"#fff5f5",insight:"#fffbf0",money:"#f0fff4",positive:"#f0fff4",tip:"#ebf8ff",sub:"#faf5ff"};
+    var borderMap={warning:"#fc8181",insight:"#f6ad55",money:"#68d391",positive:"#68d391",tip:"#90cdf4",sub:"#b794f4"};
+    return '<div class="intel-sugg-card" style="background:'+(bgMap[s.type]||"var(--sur2)")+';border-left:4px solid '+(borderMap[s.type]||"var(--gold)")+'">'
+      +'<div class="intel-sugg-title">'+s.icon+' '+s.title+'</div>'
+      +'<div class="intel-sugg-body">'+s.body+'</div>'
+      +'</div>';
+  }).join("") : '<div style="text-align:center;padding:20px;color:var(--txt3)">✅ No issues detected — everything looks great!</div>';
+
+  panel.innerHTML =
+    '<div class="intel-header">'
+    +'<div>'
+    +'<div class="intel-title">🧠 Project Intelligence</div>'
+    +'<div class="intel-subtitle">Patterns & insights from your project data</div>'
+    +'</div>'
+    +'<button class="intel-close-btn" onclick="closeIntelligence()">×</button>'
+    +'</div>'
+
+    // Summary row
+    +'<div class="intel-summary-row">'
+    +'<div class="intel-sum-card"><div class="intel-sum-val">'+intel.totalProjects+'</div><div class="intel-sum-lbl">Projects</div></div>'
+    +'<div class="intel-sum-card"><div class="intel-sum-val">'+intel.totalTasks+'</div><div class="intel-sum-lbl">Total Tasks</div></div>'
+    +'<div class="intel-sum-card"><div class="intel-sum-val" style="color:#276749">'+compPct+'%</div><div class="intel-sum-lbl">Complete</div></div>'
+    +'<div class="intel-sum-card"><div class="intel-sum-val" style="color:'+(intel.overdueTasks>0?"#c53030":"#276749")+'">'+intel.overdueTasks+'</div><div class="intel-sum-lbl">Overdue</div></div>'
+    +'</div>'
+
+    +'<div class="intel-body">'
+
+    // AI Suggestions
+    +'<div class="intel-section">'
+    +'<div class="intel-section-title">💡 Smart Suggestions</div>'
+    +suggCards
+    +'<button class="intel-ai-btn" onclick="runAIIntelligence()">🤖 Ask AI for Deep Analysis</button>'
+    +'</div>'
+
+    // Phase stats
+    +(phaseRows?'<div class="intel-section">'
+    +'<div class="intel-section-title">📊 Phase Performance</div>'
+    +'<div class="intel-table-wrap"><table class="intel-table">'
+    +'<thead><tr><th>Phase</th><th>Tasks</th><th>Avg Days</th><th>Delay Rate</th><th>Margin</th></tr></thead>'
+    +'<tbody>'+phaseRows+'</tbody>'
+    +'</table></div>'
+    +'</div>':"")
+
+    // Sub stats
+    +(subRows?'<div class="intel-section">'
+    +'<div class="intel-section-title">👷 Subcontractor Performance</div>'
+    +'<div class="intel-table-wrap"><table class="intel-table">'
+    +'<thead><tr><th>Sub</th><th>Tasks</th><th>Completion</th><th>Best Phase</th></tr></thead>'
+    +'<tbody>'+subRows+'</tbody>'
+    +'</table></div>'
+    +'</div>':"")
+
+    +'</div>'; // intel-body
+
+  panel.classList.add("open");
+  var ov=document.getElementById("intel-overlay");
+  if(!ov){ov=document.createElement("div");ov.id="intel-overlay";ov.className="rem-ov";ov.onclick=closeIntelligence;document.body.appendChild(ov);}
+  ov.classList.add("show");
+}
+
+function closeIntelligence(){
+  var panel=document.getElementById("intel-panel");
+  var ov=document.getElementById("intel-overlay");
+  if(panel)panel.classList.remove("open");
+  if(ov)ov.classList.remove("show");
+}
+
+function runAIIntelligence(){
+  var GEMINI_KEY=window.BUSYBEE_GEMINI_KEY||"";
+  if(!GEMINI_KEY){
+    alert("Add your Gemini API key first — click the 🤖 AI button in the topbar.");
+    return;
+  }
+  var intel = collectIntelligenceData();
+  var dataStr = JSON.stringify(intel,null,1);
+  var prompt = "You are a construction project management expert. Analyze this project performance data and give me:\n"
+    +"1. Top 3 specific actionable improvements I can make RIGHT NOW\n"
+    +"2. Any scheduling risks I should be aware of\n"
+    +"3. Budget optimization suggestions\n"
+    +"4. Which subcontractors I should use more or less based on performance\n\n"
+    +"Be specific, direct, and practical. Format with clear sections.\n\n"
+    +"PROJECT DATA:\n"+dataStr
+    +"\n\nACTIVE PROJECT: "+(proj()?.name||"None")
+    +"\nTODAY OFFSET: "+todayOff;
+
+  var panel=document.getElementById("intel-panel");
+  var body=panel?panel.querySelector(".intel-body"):null;
+  if(body){
+    var aiDiv=document.createElement("div");
+    aiDiv.className="intel-section";
+    aiDiv.innerHTML='<div class="intel-section-title">🤖 AI Deep Analysis</div>'
+      +'<div id="intel-ai-output" style="padding:12px;font-size:13px;color:var(--txt3);font-style:italic">Analyzing your project data...</div>';
+    body.prepend(aiDiv);
+  }
+
+  var MODEL=window.BUSYBEE_GEMINI_MODEL||"gemini-2.5-flash-preview-04-17";
+  fetch("https://generativelanguage.googleapis.com/v1beta/models/"+MODEL+":generateContent?key="+GEMINI_KEY,
+    {method:"POST",headers:{"Content-Type":"application/json"},
+     body:JSON.stringify({contents:[{role:"user",parts:[{text:prompt}]}],generationConfig:{maxOutputTokens:1500,temperature:0.7}})})
+  .then(function(r){return r.json();})
+  .then(function(data){
+    var reply="";
+    if(data.candidates&&data.candidates[0]){reply=data.candidates[0].content.parts[0].text;}
+    else if(data.error){reply="⚠ Gemini error: "+data.error.message;}
+    var out=document.getElementById("intel-ai-output");
+    if(out){
+      out.style.fontStyle="normal";out.style.color="var(--txt)";
+      out.innerHTML=reply.replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>")
+        .replace(/#{1,3}\s+(.+)/g,"<div style='font-weight:800;font-size:14px;margin:12px 0 6px'>$1</div>")
+        .replace(/\n/g,"<br>");
+    }
+  })
+  .catch(function(err){
+    var out=document.getElementById("intel-ai-output");
+    if(out)out.innerHTML="⚠ Error: "+err.message;
+  });
+}
+
+// Update intelligence button badge
+function updateIntelBadge(){
+  var btn=document.getElementById("intel-btn");
+  if(!btn)return;
+  var intel=collectIntelligenceData();
+  var issues=0;
+  if(intel.overdueTasks>0)issues+=intel.overdueTasks;
+  if(intel.delayedTasks>3)issues++;
+  Object.keys(intel.phaseStats).forEach(function(p){
+    var ps=intel.phaseStats[p];
+    if(ps.count>=2&&ps.delayed/ps.count>0.3)issues++;
+  });
+  if(issues>0){
+    btn.innerHTML='🧠 Intelligence <span style="background:rgba(255,255,255,0.25);border-radius:99px;padding:1px 7px;font-size:10px;font-weight:800;margin-left:4px">'+issues+'</span>';
+    btn.style.background="linear-gradient(135deg,#553c9a,#6b46c1)";
+    btn.style.color="#fff";btn.style.borderColor="transparent";
+  } else {
+    btn.innerHTML="🧠 Intelligence";
+    btn.style.background="";btn.style.color="";btn.style.borderColor="";
+  }
 }
 </script>
 </body>
