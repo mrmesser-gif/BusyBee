@@ -1200,6 +1200,159 @@ table.gt td.budchd-client:hover, table.gt td.budchd-builder:hover, table.gt td.b
 .intel-table tbody tr:last-child{border-bottom:none}
 .intel-table tbody tr:hover{background:var(--sur2)}
 @media(max-width:768px){.intel-panel{width:100%;right:-100%}}
+
+/* ── Templates ── */
+.tmpl-list{display:flex;flex-direction:column;gap:8px;max-height:60vh;overflow-y:auto}
+.tmpl-row{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--sur2);border-radius:10px;border:1px solid var(--bdr);gap:10px}
+.tmpl-name{font-size:14px;font-weight:700;color:var(--txt)}
+.tmpl-meta{font-size:11px;color:var(--txt3);margin-top:2px}
+.tmpl-actions{display:flex;gap:6px;flex-shrink:0}
+.tmpl-use-btn{font-family:var(--font);font-size:12px;font-weight:700;padding:6px 14px;border-radius:8px;background:var(--gold);color:#fff;border:none;cursor:pointer;white-space:nowrap}
+.tmpl-use-btn:hover{background:var(--gold2)}
+.tmpl-del-btn{font-family:var(--font);font-size:13px;padding:6px 10px;border-radius:8px;background:var(--sur);border:1px solid var(--bdr2);cursor:pointer;color:var(--txt3)}
+.tmpl-del-btn:hover{background:#fff0f0;color:#e53e3e;border-color:#fc8181}
+
+/* ── Field View ── */
+.field-panel{
+  position:fixed;inset:0;
+  background:var(--bg);
+  z-index:9000;
+  display:flex;flex-direction:column;
+  transform:translateY(100%);
+  transition:transform .3s cubic-bezier(.4,0,.2,1);
+}
+.field-panel.open{transform:translateY(0)}
+.field-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 20px;
+  background:linear-gradient(135deg,#1a1210,#2d1f1a);
+  flex-shrink:0;
+}
+.field-title{font-size:20px;font-weight:800;color:#fff}
+.field-subtitle{font-size:12px;color:rgba(255,255,255,0.6);margin-top:2px}
+.field-close-btn{font-family:var(--font);font-size:13px;font-weight:700;padding:8px 16px;border-radius:10px;background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.2);cursor:pointer}
+.field-close-btn:hover{background:rgba(255,255,255,0.25)}
+.field-body{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:12px}
+.field-card{background:var(--sur);border:1px solid var(--bdr);border-radius:16px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,0.05)}
+.field-card.field-urgent{border-color:#fc8181;border-width:2px;background:#fff5f5}
+.field-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:12px}
+.field-task-name{font-size:18px;font-weight:800;color:var(--txt);line-height:1.3}
+.field-task-meta{font-size:12px;color:var(--txt3);margin-top:4px}
+.field-task-notes{font-size:12px;color:var(--txt2);margin-top:6px;font-style:italic}
+.field-status-badge{font-size:10px;font-weight:700;padding:4px 10px;border-radius:99px;white-space:nowrap;flex-shrink:0}
+.field-btns{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.field-btn{font-family:var(--font);font-size:13px;font-weight:700;padding:12px 6px;border-radius:12px;border:none;cursor:pointer;transition:all .15s;text-align:center}
+.field-btn-done{background:#c6f6d5;color:#276749}.field-btn-done:hover{background:#9ae6b4}
+.field-btn-active{background:#bee3f8;color:#1a365d}.field-btn-active:hover{background:#90cdf4}
+.field-btn-hold{background:#fefcbf;color:#744210}.field-btn-hold:hover{background:#faf089}
+.field-btn-issue{background:#fed7d7;color:#742a2a}.field-btn-issue:hover{background:#feb2b2}
+@media(max-width:480px){.field-btns{grid-template-columns:repeat(2,1fr)}}
+
+/* ── Dependency Highlight Legend ── */
+.dep-legend{
+  position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--sur);border:1px solid var(--bdr);border-radius:12px;
+  padding:12px 16px;box-shadow:0 4px 20px rgba(0,0,0,0.15);
+  z-index:9500;min-width:280px;max-width:400px;
+  opacity:0;transition:all .25s;pointer-events:none;
+}
+.dep-legend.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
+.dep-legend-title{font-size:13px;font-weight:700;color:var(--txt);margin-bottom:8px}
+.dep-legend-row{font-size:12px;padding:4px 0;color:var(--txt2);line-height:1.5}
+.dep-blocking{color:#b7791f}
+.dep-blocked{color:#553c9a}
+
+/* ── Bottom Navigation Bar ── */
+.bottom-nav{
+  display:none;
+  position:fixed;bottom:0;left:0;right:0;
+  height:64px;
+  background:var(--sur);
+  border-top:1px solid var(--bdr);
+  z-index:8500;
+  grid-template-columns:repeat(5,1fr);
+  box-shadow:0 -4px 20px rgba(0,0,0,0.08);
+}
+.bnav-btn{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;border:none;background:transparent;cursor:pointer;
+  padding:6px 4px;color:var(--txt3);transition:all .15s;
+  font-family:var(--font);
+}
+.bnav-btn:active{background:var(--sur2)}
+.bnav-btn.active{color:var(--gold)}
+.bnav-icon{font-size:20px;line-height:1}
+.bnav-lbl{font-size:9px;font-weight:700;letter-spacing:.03em;text-transform:uppercase}
+/* Show bottom nav only on mobile */
+@media(max-width:768px){
+  .bottom-nav{display:grid}
+  body{padding-bottom:64px}
+  /* Hide top view tabs on mobile since bottom nav replaces them */
+  .view-tabs{display:none}
+}
+
+.gcal-btn{transition:all .2s}
+.gcal-btn:hover{opacity:.9;transform:translateY(-1px)}
+
+.gcal-task-btn{
+  font-family:var(--font);font-size:11px;font-weight:600;
+  padding:4px 10px;border-radius:7px;
+  border:1px solid #dbeafe;background:#eff6ff;
+  color:#1d4ed8;cursor:pointer;transition:all .15s;
+  white-space:nowrap;
+}
+.gcal-task-btn:hover{background:#dbeafe;border-color:#93c5fd}
+
+/* ── Topbar dropdown menu ── */
+.topbar-menu{position:relative;flex-shrink:0}
+.menu-toggle-btn{
+  font-family:var(--font);font-size:13px;font-weight:700;
+  padding:7px 14px;border-radius:9px;
+  border:1px solid rgba(255,255,255,0.2);
+  background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.9);
+  cursor:pointer;white-space:nowrap;transition:all .2s;
+  display:flex;align-items:center;gap:6px;
+}
+.menu-toggle-btn:hover,.menu-toggle-btn.active{
+  background:rgba(255,255,255,0.22);color:#fff;
+  border-color:rgba(255,255,255,0.35);
+}
+.topmenu-dropdown{
+  position:absolute;top:calc(100% + 8px);left:0;
+  width:220px;
+  background:var(--sur);
+  border:1px solid var(--bdr);
+  border-radius:14px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.18);
+  z-index:9000;
+  padding:8px;
+  display:none;
+  flex-direction:column;
+  gap:2px;
+  animation:menu-pop .15s cubic-bezier(.175,.885,.32,1.275);
+}
+.topmenu-dropdown.open{display:flex}
+@keyframes menu-pop{
+  0%{opacity:0;transform:translateY(-8px) scale(.97)}
+  100%{opacity:1;transform:translateY(0) scale(1)}
+}
+.topmenu-item{
+  font-family:var(--font);font-size:13px;font-weight:600;
+  padding:9px 14px;border-radius:9px;
+  border:none;background:transparent;
+  color:var(--txt2);cursor:pointer;
+  text-align:left;transition:all .15s;
+  display:flex;align-items:center;gap:8px;
+}
+.topmenu-item:hover{background:var(--sur2);color:var(--txt)}
+.topmenu-section-label{
+  font-size:9px;font-weight:800;color:var(--txt3);
+  text-transform:uppercase;letter-spacing:.08em;
+  padding:6px 14px 2px;
+}
+.topmenu-divider{
+  height:1px;background:var(--bdr);margin:4px 0;
+}
 </style>
 </head>
 <body>
@@ -1208,17 +1361,36 @@ table.gt td.budchd-client:hover, table.gt td.budchd-builder:hover, table.gt td.b
   <div class="logo">🐝</div>
   <div class="brand">BusyBee Schedule</div>
   <div class="topbar-actions">
-    <button class="tbtn intel-btn" onclick="openIntelligence()" id="intel-btn" title="Project Intelligence">🧠 Intelligence</button>
+    <!-- ☰ Menu dropdown -->
     <button class="tbtn notif-topbar-btn" onclick="openReminders()" id="reminders-btn">🔔 Reminders</button>
+    <div class="topbar-menu" id="topbar-menu">
+      <button class="tbtn menu-toggle-btn" onclick="toggleTopMenu()" id="menu-toggle-btn" title="Menu">
+        ☰ Menu
+      </button>
+      <div class="topmenu-dropdown" id="topmenu-dropdown">
+        <div class="topmenu-section-label">Actions</div>
+        <button class="topmenu-item" onclick="openFieldView();closeTopMenu()">⚡ Field View</button>
+        <button class="topmenu-item" onclick="openStandupReport();closeTopMenu()">📋 Daily Standup</button>
+        <button class="topmenu-item" onclick="openIntelligence();closeTopMenu()" id="tm-intel-btn">🧠 Intelligence</button>
+        <div class="topmenu-divider"></div>
+        <div class="topmenu-section-label">Export</div>
+        <button class="topmenu-item" onclick="exportToCalendar();closeTopMenu()">📆 Export Calendar</button>
+        <button class="topmenu-item" onclick="exportCSV();closeTopMenu()">↓ CSV</button>
+        <button class="topmenu-item" onclick="exportToPDF();closeTopMenu()">📄 PDF</button>
+        <div class="topmenu-divider"></div>
+        <div class="topmenu-section-label">Cloud</div>
+        <button class="topmenu-item" onclick="openCloudSetup();closeTopMenu()">☁ Cloud Setup</button>
+      </div>
+    </div>
+    <!-- Primary action -->
     <button class="tbtn gold" onclick="openAddTask()">+ Task</button>
-    <button class="tbtn" onclick="exportCSV()">↓ CSV</button>
-    <button class="tbtn pdf-btn" onclick="exportToPDF()" title="Export to PDF">📄 PDF</button>
+    <!-- User + cloud status -->
     <div id="user-bar" class="user-bar"></div>
     <div style="display:flex;align-items:center;gap:5px;margin-left:4px">
       <span class="cloud-status"><span id="cloud-dot" class="cloud-dot"></span></span>
-      <button class="tbtn" onclick="openCloudSetup()" title="Cloud" style="font-size:14px;padding:5px 8px">☁</button>
+      <button class="tbtn" onclick="cloudSaveNow()" title="Save to cloud" style="font-size:14px;padding:5px 8px">☁</button>
     </div>
-  </div>
+  </div>>
 </div>
 
 <!-- Project Tabs -->
@@ -1226,6 +1398,10 @@ table.gt td.budchd-client:hover, table.gt td.budchd-builder:hover, table.gt td.b
 
 <!-- Project Hero -->
 <div class="proj-hero">
+  <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+  <button onclick="openTemplatesManager()" style="font-family:var(--font);font-size:10px;font-weight:700;padding:3px 10px;border-radius:6px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7);cursor:pointer;white-space:nowrap" title="Manage templates">📋 Templates</button>
+  <button onclick="saveAsTemplate()" style="font-family:var(--font);font-size:10px;font-weight:700;padding:3px 10px;border-radius:6px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7);cursor:pointer;white-space:nowrap" title="Save as template">💾 Save as Template</button>
+  </div>
   <input class="proj-name-input" id="proj-name-input" placeholder="Click to name project…" oninput="saveProjectName()">
   <div class="proj-meta-row">
     <div class="proj-meta" id="proj-meta"></div>
@@ -1716,7 +1892,8 @@ function renderTasks(){
           onchange="updateTaskNote(${idx},this.value)">${t.notes||''}</textarea>
       </div>
       <div class="tc-foot">
-        <select class="mini-sel" style="background:${sc.bg};color:${sc.tx}"
+        <button class="gcal-task-btn" onclick="addTaskToGoogleCal(${idx})" title="Add to Google Calendar">📅 Google Cal</button>
+      <select class="mini-sel" style="background:${sc.bg};color:${sc.tx}"
           onchange="updateTask(${idx},'status',this.value);renderTasks();renderDash()">${stOpts}</select>
         <button class="crit-btn" style="${t.crit==='Yes'?'background:#fed7d7;color:#742a2a':'background:#f0f0ee;color:#888'}"
           onclick="updateTask(${idx},'crit',${t.crit==='Yes'?'"No"':'"Yes"'});renderTasks()">${t.crit==='Yes'?'🔴 Critical':'Critical?'}</button>
@@ -1852,6 +2029,7 @@ function renderGantt(){
     });
     // Prevent drag start when clicking inside the input
     nameInp.addEventListener("mousedown",ev=>ev.stopPropagation());
+    ntd.addEventListener("click",function(ev){if(!ev.target.closest('input,button,select'))highlightDependencies(idx);});
     nameInp.addEventListener("touchstart",ev=>ev.stopPropagation(),{passive:true});
     var depBtn=document.createElement("button");depBtn.className="dep-link-btn";depBtn.textContent="🔗";depBtn.title="Link tasks (dependency)";
     depBtn.addEventListener("click",function(ev){ev.stopPropagation();toggleDepLink(idx,depBtn);});
@@ -4556,6 +4734,574 @@ function updateIntelBadge(){
     btn.style.background="";btn.style.color="";btn.style.borderColor="";
   }
 }
+
+// ── Project Templates ─────────────────────────────────────────────────────
+function saveAsTemplate(){
+  var p = proj(); if(!p) return;
+  var templateName = prompt("Save this project as a template. Give it a name:", p.name+" Template");
+  if(!templateName||!templateName.trim()) return;
+  var templates = JSON.parse(localStorage.getItem("bb_templates")||"[]");
+  // Save tasks without dates/status so they're reusable
+  var templateTasks = (p.tasks||[]).map(function(t){
+    return {name:t.name,phase:t.phase,dur:t.dur||(t.so!=null&&t.eo!=null?t.eo-t.so:7),
+      who:t.who,crit:t.crit,notes:t.notes||"",collect:t.collect||0,cost:t.cost||0};
+  });
+  var template = {
+    id: Date.now(),
+    name: templateName,
+    savedAt: new Date().toISOString(),
+    taskCount: templateTasks.length,
+    tasks: templateTasks,
+    materials: (p.materials||[]).map(function(m){
+      return {name:m.name,qty:m.qty,unit:m.unit,supplier:m.supplier,task:m.task,status:"To Order"};
+    })
+  };
+  // Replace if same name exists
+  templates = templates.filter(function(t){return t.name!==templateName;});
+  templates.push(template);
+  localStorage.setItem("bb_templates", JSON.stringify(templates));
+  showToast("✓ Template \""+templateName+"\" saved!");
+}
+
+function openTemplatesManager(){
+  var templates = JSON.parse(localStorage.getItem("bb_templates")||"[]");
+  var rows = templates.length ? templates.map(function(t,i){
+    var date = new Date(t.savedAt).toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"});
+    return '<div class="tmpl-row">'
+      +'<div class="tmpl-info">'
+      +'<div class="tmpl-name">'+t.name+'</div>'
+      +'<div class="tmpl-meta">'+t.taskCount+' tasks · saved '+date+'</div>'
+      +'</div>'
+      +'<div class="tmpl-actions">'
+      +'<button class="tmpl-use-btn" onclick="useTemplate('+i+')">▶ Use</button>'
+      +'<button class="tmpl-del-btn" onclick="deleteTemplate('+i+')">🗑</button>'
+      +'</div>'
+      +'</div>';
+  }).join("")
+  : '<div style="text-align:center;padding:24px;color:var(--txt3)">No templates saved yet.<br><br>Open any project → click <strong>☁ Save as Template</strong></div>';
+
+  document.getElementById("modal-root").innerHTML =
+    '<div class="moverlay" onclick="if(event.target===this)closeModal()">'
+    +'<div class="msheet" style="max-width:500px"><div class="mhandle"></div>'
+    +'<h3 style="margin:0 0 4px">📋 Project Templates</h3>'
+    +'<p style="font-size:12px;color:var(--txt3);margin:0 0 16px">Reusable project blueprints with tasks and materials</p>'
+    +'<div class="tmpl-list">'+rows+'</div>'
+    +'<div class="mbtns"><button onclick="closeModal()">Close</button></div>'
+    +'</div></div>';
+}
+
+function useTemplate(idx){
+  var templates = JSON.parse(localStorage.getItem("bb_templates")||"[]");
+  var t = templates[idx]; if(!t) return;
+  var name = prompt("New project name:", t.name.replace(" Template","")+" - New");
+  if(!name||!name.trim()) return;
+  closeModal();
+  var newId = Date.now();
+  var cursor = todayOff;
+  var newTasks = t.tasks.map(function(tk){
+    var dur = tk.dur||7;
+    var so = cursor; var eo = cursor+dur; cursor=eo;
+    return {id:nid++,name:tk.name,phase:tk.phase,so:so,eo:eo,dur:dur,
+      who:tk.who||"TBD",status:"Pending",crit:tk.crit||"No",
+      notes:tk.notes||"",collect:tk.collect||0,cost:tk.cost||0};
+  });
+  var newMats = (t.materials||[]).map(function(m){
+    return Object.assign({},m,{id:matIdCounter++,status:"To Order"});
+  });
+  projects.push({id:newId,name:name.trim(),tasks:newTasks,materials:newMats});
+  activeProj = newId;
+  autoSave(); renderProjBar(); updateProjHero(); renderCurrentView();
+  showToast("✓ Project created from template: "+name);
+}
+
+function deleteTemplate(idx){
+  var templates = JSON.parse(localStorage.getItem("bb_templates")||"[]");
+  if(!confirm('Delete template "'+templates[idx].name+'"?')) return;
+  templates.splice(idx,1);
+  localStorage.setItem("bb_templates",JSON.stringify(templates));
+  openTemplatesManager();
+}
+
+// ── Field View ────────────────────────────────────────────────────────────
+function openFieldView(){
+  var p = proj(); if(!p) return;
+  var tasks = (p.tasks||[]).filter(function(t){return t.status!=="Complete";});
+  var panel = document.getElementById("field-panel");
+  if(!panel){
+    panel = document.createElement("div");
+    panel.id = "field-panel";
+    panel.className = "field-panel";
+    document.body.appendChild(panel);
+  }
+
+  var cards = tasks.length ? tasks.map(function(t,i){
+    var idx = (p.tasks||[]).indexOf(t);
+    var sc = STATUS_C[t.status]||{bg:"#eee",tx:"#333"};
+    var urgency = t.so!=null&&t.so<=todayOff&&t.status!=="Complete"?"field-urgent":"";
+    return '<div class="field-card '+urgency+'">'
+      +'<div class="field-card-top">'
+      +'<div>'
+      +'<div class="field-task-name">'+t.name+'</div>'
+      +'<div class="field-task-meta">'+t.phase+(t.who&&t.who!=="TBD"?" · "+t.who:"")+'</div>'
+      +(t.notes?'<div class="field-task-notes">📝 '+t.notes+'</div>':"")
+      +'</div>'
+      +'<span class="field-status-badge" style="background:'+sc.bg+';color:'+sc.tx+'">'+t.status+'</span>'
+      +'</div>'
+      +'<div class="field-btns">'
+      +'<button class="field-btn field-btn-done" onclick="fieldUpdateTask('+idx+',\'Complete\')">✓ Done</button>'
+      +'<button class="field-btn field-btn-active" onclick="fieldUpdateTask('+idx+',\'In Progress\')">▶ Active</button>'
+      +'<button class="field-btn field-btn-hold" onclick="fieldUpdateTask('+idx+',\'On Hold\')">⏸ Hold</button>'
+      +'<button class="field-btn field-btn-issue" onclick="fieldUpdateTask('+idx+',\'Delayed\')">⚠ Issue</button>'
+      +'</div>'
+      +'</div>';
+  }).join("")
+  : '<div style="text-align:center;padding:40px;color:var(--txt3)"><div style="font-size:48px;margin-bottom:12px">🎉</div><h3 style="color:var(--txt)">All tasks complete!</h3><p>Great work on '+p.name+'</p></div>';
+
+  panel.innerHTML =
+    '<div class="field-header">'
+    +'<div>'
+    +'<div class="field-title">⚡ Field View</div>'
+    +'<div class="field-subtitle">'+p.name+' · '+(p.tasks||[]).length+' tasks</div>'
+    +'</div>'
+    +'<button class="field-close-btn" onclick="closeFieldView()">✕ Exit</button>'
+    +'</div>'
+    +'<div class="field-body">'+cards+'</div>';
+
+  panel.classList.add("open");
+}
+
+function closeFieldView(){
+  var panel=document.getElementById("field-panel");
+  if(panel)panel.classList.remove("open");
+}
+
+function fieldUpdateTask(idx, status){
+  var tasks=proj()?.tasks; if(!tasks||!tasks[idx]) return;
+  tasks[idx].status = status;
+  autoSave();
+  // Flash feedback
+  showToast((status==="Complete"?"✓ Done":"⚡ Updated")+": "+tasks[idx].name);
+  // Refresh field view
+  openFieldView();
+}
+
+// ── Daily Standup Report ──────────────────────────────────────────────────
+function openStandupReport(){
+  var today = new Date().toLocaleDateString("en-US",{weekday:"long",year:"numeric",month:"long",day:"numeric"});
+  var report = "📋 DAILY STANDUP REPORT\n";
+  report += today+"\n";
+  report += "═".repeat(40)+"\n\n";
+
+  projects.forEach(function(p){
+    var tasks = p.tasks||[];
+    var inProgress = tasks.filter(function(t){return t.status==="In Progress";});
+    var doneToday = tasks.filter(function(t){return t.status==="Complete"&&t.completedAt&&t.completedAt>=new Date().toISOString().split("T")[0];});
+    var overdue = tasks.filter(function(t){return t.eo!=null&&t.eo<todayOff&&t.status!=="Complete";});
+    var upcoming = tasks.filter(function(t){return t.so!=null&&t.so>=todayOff&&t.so<=todayOff+3&&t.status==="Pending";});
+    var delayed = tasks.filter(function(t){return t.status==="Delayed";});
+    var done = tasks.filter(function(t){return t.status==="Complete";});
+    var pct = tasks.length?Math.round(done.length/tasks.length*100):0;
+
+    if(!tasks.length) return;
+
+    report += "🏗 "+p.name.toUpperCase()+" ("+pct+"% complete)\n";
+    report += "─".repeat(35)+"\n";
+
+    if(inProgress.length){
+      report += "▶ IN PROGRESS:\n";
+      inProgress.forEach(function(t){
+        report += "  • "+t.name+(t.who&&t.who!=="TBD"?" ["+t.who+"]":"")+"\n";
+      });
+    }
+    if(overdue.length){
+      report += "⚠ OVERDUE:\n";
+      overdue.forEach(function(t){
+        report += "  • "+t.name+" ("+Math.abs(t.eo-todayOff)+"d overdue)\n";
+      });
+    }
+    if(delayed.length){
+      report += "🚨 DELAYED:\n";
+      delayed.forEach(function(t){
+        report += "  • "+t.name+(t.who&&t.who!=="TBD"?" ["+t.who+"]":"")+"\n";
+      });
+    }
+    if(upcoming.length){
+      report += "📅 STARTING SOON:\n";
+      upcoming.forEach(function(t){
+        var d = t.so===todayOff?"today":t.so===todayOff+1?"tomorrow":"in "+(t.so-todayOff)+" days";
+        report += "  • "+t.name+" — "+d+(t.who&&t.who!=="TBD"?" ["+t.who+"]":"")+"\n";
+      });
+    }
+    report += "\n";
+  });
+
+  // Overall summary
+  var allTasks=[], allDone=0, allDelayed=0, allOverdue=0;
+  projects.forEach(function(p){
+    var t=p.tasks||[];
+    allTasks=allTasks.concat(t);
+    allDone+=t.filter(function(x){return x.status==="Complete";}).length;
+    allDelayed+=t.filter(function(x){return x.status==="Delayed";}).length;
+    allOverdue+=t.filter(function(x){return x.eo!=null&&x.eo<todayOff&&x.status!=="Complete";}).length;
+  });
+  report += "═".repeat(40)+"\n";
+  report += "SUMMARY: "+allDone+"/"+allTasks.length+" tasks complete";
+  if(allDelayed) report += " · "+allDelayed+" delayed";
+  if(allOverdue) report += " · "+allOverdue+" overdue";
+  report += "\n\nGenerated by BusyBee Schedule";
+
+  document.getElementById("modal-root").innerHTML =
+    '<div class="moverlay" onclick="if(event.target===this)closeModal()">'
+    +'<div class="msheet" style="max-width:540px"><div class="mhandle"></div>'
+    +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">'
+    +'<h3 style="margin:0">📋 Daily Standup Report</h3>'
+    +'<button onclick="copyStandup()" style="font-family:var(--font);font-size:12px;font-weight:700;padding:7px 14px;border-radius:8px;background:var(--gold);color:#fff;border:none;cursor:pointer">📋 Copy All</button>'
+    +'</div>'
+    +'<pre id="standup-text" style="font-family:var(--mono);font-size:11px;line-height:1.7;background:var(--sur2);padding:16px;border-radius:10px;overflow:auto;max-height:60vh;white-space:pre-wrap;color:var(--txt)">'+report+'</pre>'
+    +'<div class="mbtns"><button onclick="closeModal()">Close</button>'
+    +'<button class="primary" onclick="shareStandup()">📤 Share via SMS/Email</button>'
+    +'</div></div></div>';
+}
+
+function copyStandup(){
+  var el=document.getElementById("standup-text");
+  if(el){navigator.clipboard.writeText(el.textContent).then(function(){showToast("✓ Report copied — paste into SMS or email!");});}
+}
+function shareStandup(){
+  var el=document.getElementById("standup-text");
+  if(el&&navigator.share){navigator.share({title:"Daily Standup Report",text:el.textContent});}
+  else{copyStandup();}
+}
+
+// ── Task Dependencies Visual ──────────────────────────────────────────────
+function highlightDependencies(taskIdx){
+  var tasks = proj()?.tasks; if(!tasks) return;
+  var deps = (proj()?.deps)||[];
+
+  // Find all tasks that this task blocks (successors)
+  var blockedBy = deps.filter(function(d){return d.from===taskIdx;}).map(function(d){return d.to;});
+  // Find all tasks that block this one (predecessors)
+  var blocking = deps.filter(function(d){return d.to===taskIdx;}).map(function(d){return d.from;});
+
+  // Highlight in Gantt if visible
+  var rows = document.querySelectorAll('.gt tbody tr');
+  rows.forEach(function(row, i){
+    row.style.outline = '';
+    row.style.background = '';
+    if(blockedBy.indexOf(i)>-1){
+      row.style.background = 'rgba(99,102,241,0.08)'; // indigo - tasks I'm blocking
+      row.style.outline = '2px solid rgba(99,102,241,0.4)';
+    }
+    if(blocking.indexOf(i)>-1){
+      row.style.background = 'rgba(245,158,11,0.08)'; // gold - tasks blocking me
+      row.style.outline = '2px solid rgba(245,158,11,0.4)';
+    }
+    if(i===taskIdx){
+      row.style.background = 'rgba(16,185,129,0.1)'; // green - current task
+      row.style.outline = '2px solid rgba(16,185,129,0.5)';
+    }
+  });
+
+  // Show a tooltip/legend
+  var existing = document.getElementById('dep-legend');
+  if(existing) existing.remove();
+
+  if(blocking.length||blockedBy.length){
+    var legend = document.createElement('div');
+    legend.id = 'dep-legend';
+    legend.className = 'dep-legend';
+    var t = tasks[taskIdx];
+    legend.innerHTML =
+      '<div class="dep-legend-title">🔗 Dependencies: <strong>'+t.name+'</strong></div>'
+      +(blocking.length?'<div class="dep-legend-row dep-blocking">🟡 Blocked by: '+blocking.map(function(i){return tasks[i]?tasks[i].name:"?";}).join(", ")+'</div>':"")
+      +(blockedBy.length?'<div class="dep-legend-row dep-blocked">🟣 This blocks: '+blockedBy.map(function(i){return tasks[i]?tasks[i].name:"?";}).join(", ")+'</div>':"")
+      +'<button onclick="clearDepHighlight()" style="font-size:10px;padding:2px 8px;border-radius:5px;border:1px solid var(--bdr2);background:var(--sur2);cursor:pointer;margin-top:6px;font-family:var(--font)">Clear</button>';
+    document.body.appendChild(legend);
+    setTimeout(function(){legend.classList.add('show');},10);
+  }
+}
+
+function clearDepHighlight(){
+  var rows = document.querySelectorAll('.gt tbody tr');
+  rows.forEach(function(row){row.style.outline='';row.style.background='';});
+  var legend = document.getElementById('dep-legend');
+  if(legend) legend.remove();
+}
+
+// Patch renderGantt to add dep highlight on row click
+// Add click handler to ntd cells to show dependencies
+
+// ── Bottom Navigation Bar (mobile) ───────────────────────────────────────
+function initBottomNav(){
+  if(document.getElementById("bottom-nav"))return;
+  var nav = document.createElement("nav");
+  nav.id = "bottom-nav";
+  nav.className = "bottom-nav";
+  nav.innerHTML =
+    '<button class="bnav-btn active" data-view="overview" onclick="bnavSwitch(\'overview\',this)"><span class="bnav-icon">🏠</span><span class="bnav-lbl">Projects</span></button>'
+    +'<button class="bnav-btn" data-view="dash" onclick="bnavSwitch(\'dash\',this)"><span class="bnav-icon">📊</span><span class="bnav-lbl">Dashboard</span></button>'
+    +'<button class="bnav-btn" data-view="tasks" onclick="bnavSwitch(\'tasks\',this)"><span class="bnav-icon">📋</span><span class="bnav-lbl">Tasks</span></button>'
+    +'<button class="bnav-btn" data-view="gantt" onclick="bnavSwitch(\'gantt\',this)"><span class="bnav-icon">📅</span><span class="bnav-lbl">Gantt</span></button>'
+    +'<button class="bnav-btn" onclick="openFieldView()"><span class="bnav-icon">⚡</span><span class="bnav-lbl">Field</span></button>';
+  document.body.appendChild(nav);
+}
+
+function bnavSwitch(view, btn){
+  document.querySelectorAll(".bnav-btn").forEach(function(b){b.classList.remove("active");});
+  if(btn) btn.classList.add("active");
+  var vtab = document.querySelector(".vtab[onclick*=\"'\"+view+\"'\"]");
+  if(vtab) switchView(view, vtab);
+  else {
+    document.querySelectorAll(".vtab").forEach(function(t){t.classList.remove("active");});
+    document.querySelectorAll(".view").forEach(function(v){v.classList.remove("active");});
+    var el = document.getElementById("view-"+view);
+    if(el) el.classList.add("active");
+    activeView = view; renderCurrentView();
+  }
+}
+
+// Sync bottom nav with view switches
+var _origSwitchView2 = switchView;
+switchView = function(v, el){
+  _origSwitchView2(v, el);
+  document.querySelectorAll(".bnav-btn").forEach(function(b){
+    b.classList.toggle("active", b.dataset.view===v);
+  });
+};
+
+// Init on load
+document.addEventListener("DOMContentLoaded", function(){
+  initBottomNav();
+});
+
+// ── Export to Calendar (.ics) ─────────────────────────────────────────────
+function exportToCalendar(){
+  var p = proj();
+  if(!p){alert("Please select a project first.");return;}
+  var tasks = (p.tasks||[]).filter(function(t){return t.so!=null&&t.eo!=null;});
+  if(!tasks.length){
+    alert("No scheduled tasks found.\nSet start dates on your tasks first, then export.");
+    return;
+  }
+
+  // Show options modal
+  document.getElementById("modal-root").innerHTML =
+    '<div class="moverlay" onclick="if(event.target===this)closeModal()">'
+    +'<div class="msheet" style="max-width:460px"><div class="mhandle"></div>'
+    +'<h3 style="margin:0 0 6px">📆 Export to Calendar</h3>'
+    +'<p style="font-size:12px;color:var(--txt3);margin:0 0 18px">Export tasks as calendar events (.ics file)</p>'
+
+    +'<div style="background:var(--sur2);border-radius:10px;padding:14px;margin-bottom:16px">'
+    +'<div style="font-size:12px;font-weight:700;color:var(--txt2);margin-bottom:8px">What to export:</div>'
+    +'<label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;margin-bottom:8px">'
+    +'<input type="radio" name="cal-scope" value="project" checked style="accent-color:var(--gold)"> Current project only ('+p.name+')'
+    +'</label>'
+    +'<label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer">'
+    +'<input type="radio" name="cal-scope" value="all" style="accent-color:var(--gold)"> All projects'
+    +'</label>'
+    +'</div>'
+
+    +'<div style="background:var(--sur2);border-radius:10px;padding:14px;margin-bottom:16px">'
+    +'<div style="font-size:12px;font-weight:700;color:var(--txt2);margin-bottom:8px">Include in events:</div>'
+    +'<label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;margin-bottom:8px">'
+    +'<input type="checkbox" id="cal-include-notes" checked style="accent-color:var(--gold)"> Task notes'
+    +'</label>'
+    +'<label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;margin-bottom:8px">'
+    +'<input type="checkbox" id="cal-include-sub" checked style="accent-color:var(--gold)"> Assigned subcontractor'
+    +'</label>'
+    +'<label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer">'
+    +'<input type="checkbox" id="cal-include-budget" style="accent-color:var(--gold)"> Budget (Client/Builder price)'
+    +'</label>'
+    +'</div>'
+
+    +'<div style="background:#ebf8ff;border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:12px;color:#2c5282;line-height:1.6">'
+    +'<strong>How to import:</strong><br>'
+    +'📱 <strong>iPhone:</strong> Open the .ics file → tap "Add All" → events appear in Calendar<br>'
+    +'🤖 <strong>Android:</strong> Open the file → choose Google Calendar<br>'
+    +'💻 <strong>Google Calendar:</strong> Settings → Import → upload the .ics file<br>'
+    +'📅 <strong>Outlook:</strong> File → Open → Calendar → import .ics'
+    +'</div>'
+
+    +'<div class="mbtns">'
+    +'<button onclick="closeModal()">Cancel</button>'
+    +'<button class="primary" onclick="doExportCalendar()">📥 Download .ics File</button>'
+    +'</div></div></div>';
+}
+
+function doExportCalendar(){
+  var scope = document.querySelector('input[name="cal-scope"]:checked')?.value||"project";
+  var includeNotes = document.getElementById("cal-include-notes")?.checked;
+  var includeSub   = document.getElementById("cal-include-sub")?.checked;
+  var includeBudget = document.getElementById("cal-include-budget")?.checked;
+
+  var projectsToExport = scope==="all" ? projects : [proj()].filter(Boolean);
+  var allTasks = [];
+
+  projectsToExport.forEach(function(p){
+    (p.tasks||[]).forEach(function(t){
+      if(t.so!=null&&t.eo!=null){
+        allTasks.push({task:t, project:p});
+      }
+    });
+  });
+
+  if(!allTasks.length){
+    alert("No scheduled tasks to export.");
+    return;
+  }
+
+  // Build .ics content
+  var ics = "BEGIN:VCALENDAR\r\n";
+  ics += "VERSION:2.0\r\n";
+  ics += "PRODID:-//BusyBee Schedule//EN\r\n";
+  ics += "CALSCALE:GREGORIAN\r\n";
+  ics += "METHOD:PUBLISH\r\n";
+  ics += "X-WR-CALNAME:BusyBee Schedule\r\n";
+  ics += "X-WR-TIMEZONE:America/Los_Angeles\r\n";
+
+  allTasks.forEach(function(item){
+    var t = item.task;
+    var p = item.project;
+
+    // Convert offsets to dates
+    var startDate = o2d(t.so);
+    var endDate   = o2d(t.eo);
+
+    // Format as YYYYMMDD for all-day events
+    function fmtDate(d){
+      var y=d.getFullYear();
+      var m=String(d.getMonth()+1).padStart(2,"0");
+      var dd=String(d.getDate()).padStart(2,"0");
+      return y+m+dd;
+    }
+
+    // Build description
+    var desc = [];
+    desc.push("Project: "+p.name);
+    desc.push("Phase: "+t.phase);
+    desc.push("Status: "+t.status);
+    if(includeSub && t.who && t.who!=="TBD") desc.push("Assigned to: "+t.who);
+    if(includeBudget && (t.collect||t.cost)){
+      desc.push("Client Price: $"+Number(t.collect||0).toLocaleString());
+      desc.push("Builder Cost: $"+Number(t.cost||0).toLocaleString());
+      desc.push("Profit: $"+Number((t.collect||0)-(t.cost||0)).toLocaleString());
+    }
+    if(includeNotes && t.notes && t.notes.trim()) desc.push("Notes: "+t.notes);
+
+    // Build summary (event title)
+    var summary = p.name+" · "+t.name;
+    if(t.who && t.who!=="TBD" && includeSub) summary += " ["+t.who+"]";
+
+    // Unique ID
+    var uid = "busybee-"+p.id+"-"+t.id+"@busybee.app";
+
+    // Fold long lines (ics standard: max 75 chars per line)
+    function foldLine(str){
+      if(str.length<=75)return str;
+      var out="", i=0;
+      while(i<str.length){
+        if(i===0){out+=str.slice(0,75);i=75;}
+        else{out+="\r\n "+str.slice(i,i+74);i+=74;}
+      }
+      return out;
+    }
+
+    ics += "BEGIN:VEVENT\r\n";
+    ics += foldLine("UID:"+uid)+"\r\n";
+    ics += "DTSTART;VALUE=DATE:"+fmtDate(startDate)+"\r\n";
+    ics += "DTEND;VALUE=DATE:"+fmtDate(endDate)+"\r\n";
+    ics += foldLine("SUMMARY:"+summary.replace(/,/g,"\\,"))+"\r\n";
+    ics += foldLine("DESCRIPTION:"+desc.join("\\n").replace(/,/g,"\\,"))+"\r\n";
+    ics += "CATEGORIES:"+t.phase+"\r\n";
+    ics += "STATUS:"+(t.status==="Complete"?"COMPLETED":t.status==="In Progress"?"IN-PROCESS":"NEEDS-ACTION")+"\r\n";
+    ics += "DTSTAMP:"+new Date().toISOString().replace(/[-:]/g,"").replace(/\..+/,"")+"\r\n";
+    ics += "END:VEVENT\r\n";
+  });
+
+  ics += "END:VCALENDAR\r\n";
+
+  // Download the file
+  var blob = new Blob([ics], {type:"text/calendar;charset=utf-8"});
+  var url  = URL.createObjectURL(blob);
+  var a    = document.createElement("a");
+  a.href   = url;
+  var fname = scope==="all" ? "BusyBee-All-Projects.ics" : "BusyBee-"+proj().name.replace(/\s+/g,"-")+".ics";
+  a.download = fname;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+
+  closeModal();
+  showToast("✓ "+allTasks.length+" tasks exported → open the .ics file to import into your calendar!");
+}
+
+
+// ── Google Calendar link per task ─────────────────────────────────────────
+function addTaskToGoogleCal(idx){
+  var tasks = proj()?.tasks; if(!tasks||!tasks[idx]) return;
+  var t = tasks[idx];
+  var p = proj();
+  if(!t.so||!t.eo){ alert("Set a start date for this task first."); return; }
+
+  var startDate = o2d(t.so);
+  var endDate   = o2d(t.eo);
+
+  function fmtGCal(d){
+    return d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0');
+  }
+
+  var title = encodeURIComponent(p.name+' · '+t.name+(t.who&&t.who!=='TBD'?' ['+t.who+']':''));
+  var details = encodeURIComponent(
+    'Project: '+p.name+'\nPhase: '+t.phase+'\nStatus: '+t.status
+    +(t.who&&t.who!=='TBD'?'\nAssigned: '+t.who:'')
+    +(t.notes?'\nNotes: '+t.notes:'')
+  );
+
+  var url = 'https://calendar.google.com/calendar/render?action=TEMPLATE'
+    +'&text='+title
+    +'&dates='+fmtGCal(startDate)+'/'+fmtGCal(endDate)
+    +'&details='+details;
+
+  window.open(url, '_blank');
+}
+
+function toggleTopMenu(){
+  var dd = document.getElementById("topmenu-dropdown");
+  var btn = document.getElementById("menu-toggle-btn");
+  if(!dd) return;
+  var isOpen = dd.classList.contains("open");
+  dd.classList.toggle("open", !isOpen);
+  btn.classList.toggle("active", !isOpen);
+}
+function closeTopMenu(){
+  var dd = document.getElementById("topmenu-dropdown");
+  var btn = document.getElementById("menu-toggle-btn");
+  if(dd) dd.classList.remove("open");
+  if(btn) btn.classList.remove("active");
+}
+// Close menu when clicking outside
+document.addEventListener("click", function(e){
+  var menu = document.getElementById("topbar-menu");
+  if(menu && !menu.contains(e.target)) closeTopMenu();
+});
+
+// Sync badges to menu items
+var _origCheckRem = checkReminders;
+checkReminders = function(){
+  _origCheckRem();
+  // Mirror badge to menu item
+  var remBtn = document.getElementById("reminders-btn");
+  var tmRem  = document.getElementById("tm-reminders-btn");
+  if(tmRem && remBtn) tmRem.innerHTML = remBtn.innerHTML.replace('🔔 Reminders','🔔 Reminders');
+};
+var _origUpdateIntel = updateIntelBadge;
+updateIntelBadge = function(){
+  _origUpdateIntel();
+  var intelBtn = document.getElementById("intel-btn");
+  var tmIntel  = document.getElementById("tm-intel-btn");
+  if(tmIntel && intelBtn) tmIntel.innerHTML = intelBtn ? intelBtn.textContent : "🧠 Intelligence";
+};
 </script>
 </body>
 </html>
