@@ -1353,6 +1353,49 @@ table.gt td.budchd-client:hover, table.gt td.budchd-builder:hover, table.gt td.b
 .topmenu-divider{
   height:1px;background:var(--bdr);margin:4px 0;
 }
+
+.dn-topbar-btn{background:linear-gradient(135deg,#276749,#38a169)!important;color:#fff!important;border-color:transparent!important}
+.dn-topbar-btn:hover{opacity:.9}
+.dn-panel{position:fixed;right:-520px;top:0;bottom:0;width:500px;background:var(--sur);display:flex;flex-direction:column;z-index:8300;transition:right .3s cubic-bezier(.4,0,.2,1);box-shadow:-4px 0 32px rgba(0,0,0,0.18);border-left:1px solid var(--bdr)}
+.dn-panel.open{right:0}
+.dn-header{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;background:linear-gradient(135deg,#1a2e1a,#2d4a2d);flex-shrink:0}
+.dn-title{font-size:18px;font-weight:800;color:#fff}
+.dn-subtitle{font-size:11px;color:rgba(255,255,255,0.6);margin-top:2px}
+.dn-input-area{padding:14px 16px;border-bottom:1px solid var(--bdr);background:var(--bg);flex-shrink:0}
+.dn-input{width:100%;font-family:var(--font);font-size:13px;padding:10px 12px;border:1px solid var(--bdr2);border-radius:10px;background:var(--sur);color:var(--txt);outline:none;resize:none;line-height:1.5;box-sizing:border-box}
+.dn-input:focus{border-color:#48bb78}
+.dn-input-toolbar{display:flex;align-items:center;justify-content:space-between;margin-top:10px;gap:8px;flex-wrap:wrap}
+.dn-tags-row{display:flex;gap:5px;flex-wrap:wrap;flex:1}
+.dn-tag-pick{font-family:var(--font);font-size:11px;font-weight:600;padding:4px 10px;border-radius:99px;border:1px solid var(--bdr2);background:var(--sur2);color:var(--txt2);cursor:pointer;transition:all .15s;white-space:nowrap}
+.dn-tag-pick:hover,.dn-tag-pick.active{border-color:#48bb78;color:#276749;background:#c6f6d5}
+.dn-proj-sel{font-family:var(--font);font-size:12px;padding:6px 10px;border:1px solid var(--bdr2);border-radius:8px;background:var(--sur2);color:var(--txt);outline:none;max-width:150px}
+.dn-add-btn{font-family:var(--font);font-size:13px;font-weight:700;padding:8px 20px;border-radius:9px;background:linear-gradient(135deg,#38a169,#276749);color:#fff;border:none;cursor:pointer;white-space:nowrap;box-shadow:0 2px 8px rgba(56,161,105,0.3)}
+.dn-add-btn:hover{opacity:.85}
+.dn-list{flex:1;overflow-y:auto;padding:12px 16px;display:flex;flex-direction:column;gap:12px;min-height:0}
+.dn-group{display:flex;flex-direction:column;gap:6px}
+.dn-group-date{font-size:11px;font-weight:800;color:var(--txt3);text-transform:uppercase;letter-spacing:.08em;padding:4px 0 6px;border-bottom:1px solid var(--bdr);margin-bottom:2px}
+.dn-item{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--sur);border:1px solid var(--bdr);border-radius:10px;transition:box-shadow .15s}
+.dn-item:hover{box-shadow:0 2px 8px rgba(0,0,0,0.07)}
+.dn-check{font-size:16px;background:none;border:none;cursor:pointer;flex-shrink:0;padding:0;margin-top:1px}
+.dn-item-content{flex:1;min-width:0}
+.dn-item-text{font-size:13px;color:var(--txt);line-height:1.5;word-break:break-word}
+.dn-item-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:5px}
+.dn-tag{font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;background:var(--sur2);color:var(--txt3)}
+.dn-proj-ref{font-size:10px;color:var(--txt3);background:var(--sur2);padding:2px 8px;border-radius:99px;border:1px solid var(--bdr2)}
+.dn-del-btn{font-size:16px;background:none;border:none;cursor:pointer;color:var(--txt3);padding:2px 6px;border-radius:5px;opacity:0;transition:all .15s;flex-shrink:0}
+.dn-item:hover .dn-del-btn{opacity:1}
+.dn-del-btn:hover{background:#fff0f0;color:#e53e3e}
+.dn-tag-Urgent{background:#fed7d7;color:#c53030}
+.dn-tag-FollowUp{background:#fefcbf;color:#744210}
+.dn-tag-Idea{background:#e9d8fd;color:#553c9a}
+.dn-tag-Call{background:#bee3f8;color:#2c5282}
+.dn-tag-Order{background:#fefcbf;color:#c05621}
+.dn-tag-Meeting{background:#c6f6d5;color:#276749}
+.dn-footer{display:flex;gap:8px;padding:12px 16px;border-top:1px solid var(--bdr);flex-shrink:0;background:var(--bg)}
+.dn-footer-btn{font-family:var(--font);font-size:12px;font-weight:600;padding:7px 14px;border-radius:8px;border:1px solid var(--bdr2);background:var(--sur2);color:var(--txt2);cursor:pointer;flex:1;transition:all .15s}
+.dn-footer-btn:hover{background:var(--sur);border-color:var(--gold);color:var(--gold)}
+.dn-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--txt3);padding:40px}
+@media(max-width:768px){.dn-panel{width:100%;right:-100%}}
 </style>
 </head>
 <body>
@@ -1362,7 +1405,6 @@ table.gt td.budchd-client:hover, table.gt td.budchd-builder:hover, table.gt td.b
   <div class="brand">BusyBee Schedule</div>
   <div class="topbar-actions">
     <!-- ☰ Menu dropdown -->
-    <button class="tbtn notif-topbar-btn" onclick="openReminders()" id="reminders-btn">🔔 Reminders</button>
     <div class="topbar-menu" id="topbar-menu">
       <button class="tbtn menu-toggle-btn" onclick="toggleTopMenu()" id="menu-toggle-btn" title="Menu">
         ☰ Menu
@@ -1371,6 +1413,7 @@ table.gt td.budchd-client:hover, table.gt td.budchd-builder:hover, table.gt td.b
         <div class="topmenu-section-label">Actions</div>
         <button class="topmenu-item" onclick="openFieldView();closeTopMenu()">⚡ Field View</button>
         <button class="topmenu-item" onclick="openStandupReport();closeTopMenu()">📋 Daily Standup</button>
+        <button class="topmenu-item" onclick="openReminders();closeTopMenu()" id="tm-reminders-btn">🔔 Reminders</button>
         <button class="topmenu-item" onclick="openIntelligence();closeTopMenu()" id="tm-intel-btn">🧠 Intelligence</button>
         <div class="topmenu-divider"></div>
         <div class="topmenu-section-label">Export</div>
@@ -1383,6 +1426,7 @@ table.gt td.budchd-client:hover, table.gt td.budchd-builder:hover, table.gt td.b
       </div>
     </div>
     <!-- Primary action -->
+    <button class="tbtn dn-topbar-btn" onclick="openDailyNotes()" id="daily-notes-btn" title="Daily Notes">📓 Notes</button>
     <button class="tbtn gold" onclick="openAddTask()">+ Task</button>
     <!-- User + cloud status -->
     <div id="user-bar" class="user-bar"></div>
@@ -3812,6 +3856,8 @@ function loadSupabaseSDK(cb){
 }
 function cloudConfigured(){return!!(SUPABASE_URL&&SUPABASE_KEY&&sbClient);}
 function showAuthOverlay(){
+  ['daily-notes-btn','reminders-btn','menu-toggle-btn'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display='none';});
+  var g=document.querySelector('.tbtn.gold');if(g)g.style.display='none';
   var overlay=document.createElement("div");overlay.id="auth-overlay";
   overlay.innerHTML='<div class="auth-card"><div class="auth-logo">🐝</div><div class="auth-brand">BusyBee Schedule</div><div class="auth-sub">Construction Management</div>'
     +'<div class="auth-tabs"><button class="auth-tab active" id="tab-signin" onclick="authSwitchTab(\'signin\',this)">Sign In</button><button class="auth-tab" id="tab-signup" onclick="authSwitchTab(\'signup\',this)">Create Account</button></div>'
@@ -3854,7 +3900,9 @@ function authSubmit(){
     });
   }
 }
-function onSignIn(user){currentUser=user;var ov=document.getElementById("auth-overlay");if(ov)ov.remove();updateUserBar();cloudLoadData();}
+function onSignIn(user){
+  ['daily-notes-btn','reminders-btn','menu-toggle-btn'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display='';});
+  var g=document.querySelector('.tbtn.gold');if(g)g.style.display='';currentUser=user;var ov=document.getElementById("auth-overlay");if(ov)ov.remove();updateUserBar();cloudLoadData();}
 function signOut(){if(!confirm("Sign out?"))return;sbClient.auth.signOut().then(function(){currentUser=null;updateUserBar();showAuthOverlay();});}
 function updateUserBar(){
   var ub=document.getElementById("user-bar");if(!ub)return;
@@ -5302,6 +5350,114 @@ updateIntelBadge = function(){
   var tmIntel  = document.getElementById("tm-intel-btn");
   if(tmIntel && intelBtn) tmIntel.innerHTML = intelBtn ? intelBtn.textContent : "🧠 Intelligence";
 };
+
+// ══════════════════════════════════════════════════════════════════════════
+// DAILY NOTES
+// ══════════════════════════════════════════════════════════════════════════
+function getDailyNotes(){
+  return JSON.parse(localStorage.getItem("bb_daily_notes")||"[]");
+}
+function saveDailyNotes(notes){
+  localStorage.setItem("bb_daily_notes",JSON.stringify(notes));
+}
+function openDailyNotes(){
+  if(!currentUser){showToast("Please sign in first");return;}
+  var panel=document.getElementById("daily-notes-panel");
+  if(!panel){panel=document.createElement("div");panel.id="daily-notes-panel";panel.className="dn-panel";document.body.appendChild(panel);}
+  renderDailyNotesPanel();
+  panel.classList.add("open");
+  var ov=document.getElementById("dn-overlay");
+  if(!ov){ov=document.createElement("div");ov.id="dn-overlay";ov.className="rem-ov";ov.onclick=closeDailyNotes;document.body.appendChild(ov);}
+  ov.classList.add("show");
+  setTimeout(function(){var inp=document.getElementById("dn-input");if(inp)inp.focus();},300);
+}
+function closeDailyNotes(){
+  var panel=document.getElementById("daily-notes-panel");
+  var ov=document.getElementById("dn-overlay");
+  if(panel)panel.classList.remove("open");
+  if(ov)ov.classList.remove("show");
+}
+function renderDailyNotesPanel(){
+  var panel=document.getElementById("daily-notes-panel");if(!panel)return;
+  var notes=getDailyNotes();
+  var today=new Date().toLocaleDateString("en-US",{weekday:"long",year:"numeric",month:"long",day:"numeric"});
+  var todayKey=new Date().toISOString().split("T")[0];
+  var groups={};
+  notes.forEach(function(n){var d=n.ts?n.ts.split("T")[0]:todayKey;if(!groups[d])groups[d]=[];groups[d].push(n);});
+  var dates=Object.keys(groups).sort(function(a,b){return b.localeCompare(a);});
+  var notesList=dates.length?dates.map(function(d){
+    var dayNotes=groups[d];
+    var label=d===todayKey?"Today":new Date(d+"T12:00:00").toLocaleDateString("en-US",{weekday:"long",month:"short",day:"numeric"});
+    var items=dayNotes.map(function(n){
+      var idx=notes.indexOf(n);
+      var tagHtml=n.tag?'<span class="dn-tag dn-tag-'+n.tag.replace(/ /g,"")+'">'+n.tag+'</span>':"";
+      var doneStyle=n.done?"text-decoration:line-through;opacity:0.5;":"";
+      return '<div class="dn-item">'
+        +'<button class="dn-check" onclick="toggleDailyNoteDone('+idx+')">'+(n.done?"✅":"☐")+'</button>'
+        +'<div class="dn-item-content" style="'+doneStyle+'">'
+        +'<div class="dn-item-text">'+escDN(n.text)+'</div>'
+        +(tagHtml||n.project?'<div class="dn-item-meta">'+(tagHtml)+(n.project?'<span class="dn-proj-ref">📁 '+n.project+'</span>':"")+'</div>':"")
+        +'</div>'
+        +'<button class="dn-del-btn" onclick="deleteDailyNote('+idx+')" title="Delete">×</button>'
+        +'</div>';
+    }).join("");
+    return '<div class="dn-group"><div class="dn-group-date">📅 '+label+'</div>'+items+'</div>';
+  }).join("")
+  :'<div class="dn-empty"><div style="font-size:40px;margin-bottom:8px">📓</div><p>No notes yet.<br>Add your first note below.</p></div>';
+
+  var tags=["General","Follow Up","Urgent","Idea","Call","Order","Meeting"];
+  var tagOpts=tags.map(function(t){
+    var active=window._dnTag===t?" active":"";
+    return '<button class="dn-tag-pick dn-tag-'+t.replace(/ /g,"")+active+'" onclick="setDNTag(\''+t+'\')">'+t+'</button>';
+  }).join("");
+  var projOpts='<option value="">No project</option>'+projects.map(function(p){return '<option value="'+escDN(p.name)+'">'+escDN(p.name)+'</option>';}).join("");
+
+  panel.innerHTML=
+    '<div class="dn-header"><div><div class="dn-title">📓 Daily Notes</div><div class="dn-subtitle">'+today+'</div></div>'
+    +'<button class="rem-close-btn" onclick="closeDailyNotes()">×</button></div>'
+    +'<div class="dn-input-area">'
+    +'<textarea class="dn-input" id="dn-input" placeholder="Add a note, task, reminder, or idea… (Ctrl+Enter to save)" rows="3"'
+    +' onkeydown="if((event.ctrlKey||event.metaKey)&&event.key===\'Enter\'){event.preventDefault();addDailyNote();}"></textarea>'
+    +'<div class="dn-input-toolbar">'
+    +'<div class="dn-tags-row">'+tagOpts+'</div>'
+    +'<div style="display:flex;align-items:center;gap:8px">'
+    +'<select class="dn-proj-sel" id="dn-proj-sel">'+projOpts+'</select>'
+    +'<button class="dn-add-btn" onclick="addDailyNote()">+ Add</button>'
+    +'</div></div></div>'
+    +'<div class="dn-list">'+notesList+'</div>'
+    +'<div class="dn-footer">'
+    +'<button class="dn-footer-btn" onclick="copyDailyNotes()">📋 Copy Today\'s Notes</button>'
+    +'<button class="dn-footer-btn" onclick="clearDoneDailyNotes()">🗑 Clear Done</button>'
+    +'</div>';
+}
+function escDN(str){return (str||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function setDNTag(tag){window._dnTag=window._dnTag===tag?null:tag;renderDailyNotesPanel();setTimeout(function(){var i=document.getElementById("dn-input");if(i)i.focus();},50);}
+function addDailyNote(){
+  var inp=document.getElementById("dn-input");var text=(inp?inp.value:"").trim();if(!text)return;
+  var proj=document.getElementById("dn-proj-sel");
+  var notes=getDailyNotes();
+  notes.unshift({id:Date.now(),text:text,tag:window._dnTag||"",project:proj?proj.value:"",ts:new Date().toISOString(),done:false});
+  saveDailyNotes(notes);if(inp)inp.value="";window._dnTag=null;renderDailyNotesPanel();
+  setTimeout(function(){var i=document.getElementById("dn-input");if(i)i.focus();},50);
+}
+function toggleDailyNoteDone(idx){var notes=getDailyNotes();if(!notes[idx])return;notes[idx].done=!notes[idx].done;saveDailyNotes(notes);renderDailyNotesPanel();}
+function deleteDailyNote(idx){var notes=getDailyNotes();notes.splice(idx,1);saveDailyNotes(notes);renderDailyNotesPanel();}
+function clearDoneDailyNotes(){
+  var notes=getDailyNotes();var rem=notes.filter(function(n){return !n.done;});
+  if(notes.length===rem.length)return;
+  if(!confirm("Remove "+(notes.length-rem.length)+" completed notes?"))return;
+  saveDailyNotes(rem);renderDailyNotesPanel();
+}
+function copyDailyNotes(){
+  var notes=getDailyNotes();var todayKey=new Date().toISOString().split("T")[0];
+  var todayNotes=notes.filter(function(n){return n.ts&&n.ts.startsWith(todayKey);});
+  if(!todayNotes.length){showToast("No notes for today yet.");return;}
+  var today=new Date().toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric",year:"numeric"});
+  var text="DAILY NOTES — "+today+"\n"+"─".repeat(35)+"\n\n";
+  todayNotes.forEach(function(n){text+=(n.done?"✓ ":"• ")+(n.tag?"["+n.tag+"] ":"")+n.text+(n.project?" ("+n.project+")":"")+"\n";});
+  text+="\n— BusyBee Schedule";
+  navigator.clipboard.writeText(text).then(function(){showToast("✓ Today\'s notes copied!");});
+}
 </script>
 </body>
 </html>
