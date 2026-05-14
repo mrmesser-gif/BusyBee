@@ -1396,6 +1396,38 @@ table.gt td.budchd-client:hover, table.gt td.budchd-builder:hover, table.gt td.b
 .dn-footer-btn:hover{background:var(--sur);border-color:var(--gold);color:var(--gold)}
 .dn-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--txt3);padding:40px}
 @media(max-width:768px){.dn-panel{width:100%;right:-100%}}
+
+/* ── Notes in Reminders panel ── */
+.rem-notes-section{
+  padding:12px 16px;
+  border-bottom:2px solid var(--bdr);
+  margin-bottom:4px;
+  flex-shrink:0;
+}
+.rem-notes-header{
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:13px;color:var(--txt2);margin-bottom:10px;
+}
+.rem-notes-mark-btn{
+  font-family:var(--font);font-size:11px;font-weight:700;
+  padding:4px 12px;border-radius:7px;
+  border:1px solid #68d391;background:#c6f6d5;
+  color:#276749;cursor:pointer;transition:all .15s;
+}
+.rem-notes-mark-btn:hover{background:#9ae6b4}
+.rem-note-card{
+  background:var(--sur);border:1px solid var(--bdr);
+  border-left:3px solid #48bb78;
+  border-radius:8px;padding:10px 14px;
+  margin-bottom:8px;
+}
+.rem-note-header{
+  display:flex;align-items:center;gap:8px;
+  margin-bottom:6px;flex-wrap:wrap;
+}
+.rem-note-proj{font-size:11px;color:var(--txt3);font-weight:600}
+.rem-note-time{font-size:10px;color:var(--txt3);margin-left:auto}
+.rem-note-text{font-size:13px;color:var(--txt);line-height:1.5}
 </style>
 </head>
 <body>
@@ -4228,7 +4260,7 @@ function openReminders(){
   var dismissed=JSON.parse(localStorage.getItem("bb_rem_dismissed")||"{}");
   var collapsed=JSON.parse(localStorage.getItem("bb_rem_collapsed")||"{}");
 
-  // Group by project
+  // Group tasks by project
   var grouped={};
   upcoming.forEach(function(r){
     if(!grouped[r.project])grouped[r.project]=[];
@@ -4239,6 +4271,7 @@ function openReminders(){
   });
   var projNames=Object.keys(grouped).sort();
 
+  // Build panel
   var panel=document.getElementById("reminders-panel");
   if(!panel){
     panel=document.createElement("div");
@@ -4251,6 +4284,34 @@ function openReminders(){
     return '<option value="'+d+'"'+(d===days?' selected':'')+'>'+d+' days ahead</option>';
   }).join("");
 
+  // ── Unread notes section ────────────────────────────────────────────────
+  var lastSeen2=localStorage.getItem('bb_notes_last_seen')||'0';
+  var allNotes2=getDailyNotes();
+  var unread2=allNotes2.filter(function(n){return !n.done&&n.ts&&(lastSeen2==='0'||n.ts>lastSeen2);});
+  var notesSection="";
+  if(unread2.length){
+    var noteCards=unread2.map(function(n){
+      var tagHtml=n.tag?'<span class="dn-tag dn-tag-'+n.tag.replace(/ /g,"")+'" style="font-size:10px;padding:2px 7px;border-radius:99px">'+n.tag+'</span>':"";
+      var timeStr=new Date(n.ts).toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit"});
+      return '<div class="rem-note-card">'
+        +'<div class="rem-note-header">'
+        +(n.project?'<span class="rem-note-proj">📁 '+n.project+'</span>':'<span class="rem-note-proj">📓 General</span>')
+        +tagHtml
+        +'<span class="rem-note-time">'+timeStr+'</span>'
+        +'</div>'
+        +'<div class="rem-note-text">'+n.text+'</div>'
+        +'</div>';
+    }).join("");
+    notesSection='<div class="rem-notes-section">'
+      +'<div class="rem-notes-header">'
+      +'<div>📓 <strong>New Notes</strong> <span style="font-size:11px;color:var(--txt3)">('+unread2.length+' unread)</span></div>'
+      +'<button class="rem-notes-mark-btn" onclick="markAllNotesRead()">✓ Mark all read</button>'
+      +'</div>'
+      +noteCards
+      +'</div>';
+  }
+
+  // ── Task reminders grouped by project ──────────────────────────────────
   var cards="";
   if(upcoming.length){
     projNames.forEach(function(projName){
@@ -4258,7 +4319,6 @@ function openReminders(){
       var projKey="proj_"+projName.replace(/\s+/g,"_");
       var isCollapsed=collapsed[projKey];
       var projDismissed=0;
-
       var taskCards=projTasks.map(function(r){
         var remKey=projName+"_"+r.task+"_"+r.startDate;
         var isDismissed=dismissed[remKey];
@@ -4266,59 +4326,47 @@ function openReminders(){
         var urgColor=r.daysUntil===0?"#e53e3e":r.daysUntil<=3?"#dd6b20":r.daysUntil<=7?"#d97706":"#276749";
         var urgLabel=r.daysUntil===0?"TODAY":r.daysUntil===1?"TOMORROW":r.daysUntil+" days";
         var matsHtml=r.materials.length
-          ?'<div class="rem-materials">🛒 <strong>Materials to order:</strong><br>'+r.materials.map(function(m){return '• '+m.name;}).join('<br>')+'</div>'
-          :"";
-        var notesHtml=r.notes?'<div class="rem-notes">📝 '+r.notes+'</div>':"";
+          ?'<div class="rem-materials">🛒 <strong>Materials to order:</strong><br>'+r.materials.map(function(m){return '• '+m.name;}).join('<br>')+'</div>':"";
+        var notesHtml=r.notes?'<div class="rem-notes-old">📝 '+r.notes+'</div>':"";
         var nextBadge=r.isNext?'<span class="rem-next-badge">⚡ Next up</span>':"";
         var dismissedStyle=isDismissed?'opacity:0.45;background:#f0fff4;':'';
-        var checkIcon=isDismissed?'✅':'☐';
-        var checkLabel=isDismissed?'Done':'Mark Done';
         return '<div class="rem-card" style="'+dismissedStyle+'">'
           +'<div class="rem-card-head">'
           +'<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">'
-          +'<span class="rem-urgency" style="background:'+(isDismissed?"#68d391":urgColor)+'">'+( isDismissed?"✓ Done":urgLabel)+'</span>'
-          +nextBadge
-          +'</div>'
+          +'<span class="rem-urgency" style="background:'+(isDismissed?"#68d391":urgColor)+'">'+(isDismissed?"✓ Done":urgLabel)+'</span>'
+          +nextBadge+'</div>'
           +'<div class="rem-task-name">'+r.task+'</div>'
           +'<div class="rem-phase-tag">'+r.phase+'</div>'
           +'</div>'
           +'<div class="rem-card-body">'
           +'<div class="rem-row"><span class="rem-lbl">📅 Start date</span><span class="rem-val">'+r.startDate+'</span></div>'
-          +(r.who&&r.who!=="TBD"?'<div class="rem-row"><span class="rem-lbl">👷 Assigned to</span><span class="rem-val">'+r.who+'</span></div>':"")
+          +(r.who&&r.who!=="TBD"?'<div class="rem-row"><span class="rem-lbl">👷 Assigned</span><span class="rem-val">'+r.who+'</span></div>':"")
           +(r.status!=="Pending"?'<div class="rem-row"><span class="rem-lbl">📊 Status</span><span class="rem-val">'+r.status+'</span></div>':"")
-          +(r.collect||r.cost?'<div class="rem-row"><span class="rem-lbl">💵 / 🔨</span><span class="rem-val">$'+Number(r.collect||0).toLocaleString()+' / $'+Number(r.cost||0).toLocaleString()+'</span></div>':"")
           +matsHtml+notesHtml
           +'<div style="display:flex;gap:8px;margin-top:4px;flex-wrap:wrap">'
-          +'<button class="rem-done-btn'+(isDismissed?" rem-done-active":"")+'" onclick="toggleReminderDone(\''+remKey.replace(/'/g,"\\'")+'\')">'
-          +checkIcon+' '+checkLabel
-          +'</button>'
-          +'<button class="rem-copy-btn" onclick="copyReminderText('+JSON.stringify(r).replace(/"/g,"&quot;")+')" >📋 Copy</button>'
-          +'</div>'
-          +'</div></div>';
+          +'<button class="rem-done-btn'+(isDismissed?" rem-done-active":"")+'" onclick="toggleReminderDone(\''+remKey.replace(/'/g,"\\'")+'\')">'+( isDismissed?'✅ Done':'☐ Mark Done')+'</button>'
+          +'<button class="rem-copy-btn" onclick="copyReminderText('+JSON.stringify(r).replace(/"/g,"&quot;")+')">📋 Copy</button>'
+          +'</div></div></div>';
       }).join("");
-
       var allDone=projDismissed===projTasks.length;
       var doneCount=projDismissed>0?' <span class="rem-proj-done-count">'+projDismissed+'/'+projTasks.length+' done</span>':"";
-      var collapseIcon=isCollapsed?'▶':'▼';
-
       cards+='<div class="rem-proj-group" id="'+projKey+'">'
         +'<div class="rem-proj-group-header'+(allDone?" rem-proj-all-done":"")+'" onclick="toggleRemProj(\''+projKey+'\')" style="cursor:pointer">'
         +'<div style="display:flex;align-items:center;gap:8px">'
-        +'<span class="rem-collapse-icon">'+collapseIcon+'</span>'
+        +'<span class="rem-collapse-icon">'+(isCollapsed?'▶':'▼')+'</span>'
         +(allDone?'✅ ':'📁 ')+'<strong>'+projName+'</strong>'
         +'<span class="rem-proj-count">'+projTasks.length+' task'+(projTasks.length!==1?'s':'')+'</span>'
-        +doneCount
-        +'</div>'
-        +'</div>'
+        +doneCount+'</div></div>'
         +'<div class="rem-proj-tasks" id="'+projKey+'_tasks" style="'+(isCollapsed?"display:none":"")+'">'
-        +taskCards
-        +'</div>'
-        +'</div>';
+        +taskCards+'</div></div>';
     });
-  } else {
-    cards='<div class="rem-empty"><div style="font-size:48px;margin-bottom:12px">✅</div><h3 style="margin:0 0 8px;color:var(--txt)">All clear!</h3><p style="color:var(--txt3)">No upcoming tasks in the next '+days+' days.</p></div>';
+  } else if(!unread2.length){
+    cards='<div class="rem-empty"><div style="font-size:48px;margin-bottom:12px">✅</div>'
+      +'<h3 style="margin:0 0 8px;color:var(--txt)">All clear!</h3>'
+      +'<p style="color:var(--txt3)">No upcoming tasks in the next '+days+' days and no unread notes.</p></div>';
   }
 
+  // ── Build panel HTML ────────────────────────────────────────────────────
   panel.innerHTML=
     '<div class="rem-panel-header">'
     +'<div>'
@@ -4334,49 +4382,12 @@ function openReminders(){
     +'<button class="rem-ctrl-btn" onclick="collapseAllProj(false)">Expand All</button>'
     +'<button class="rem-ctrl-btn rem-ctrl-clear" onclick="clearAllDone()">Clear Done</button>'
     +'</div>'
-    +'<div class="rem-panel-body">'+cards+'</div>';
+    +'<div class="rem-panel-body">'+notesSection+cards+'</div>';
 
   panel.classList.add("open");
   var ov=document.getElementById("rem-overlay");
   if(!ov){ov=document.createElement("div");ov.id="rem-overlay";ov.className="rem-ov";ov.onclick=closeReminders;document.body.appendChild(ov);}
   ov.classList.add("show");
-}
-
-function toggleRemProj(projKey){
-  var collapsed=JSON.parse(localStorage.getItem("bb_rem_collapsed")||"{}");
-  collapsed[projKey]=!collapsed[projKey];
-  localStorage.setItem("bb_rem_collapsed",JSON.stringify(collapsed));
-  var icon=document.querySelector('#'+projKey+' .rem-collapse-icon');
-  var tasks=document.getElementById(projKey+'_tasks');
-  if(tasks){
-    var isNowCollapsed=collapsed[projKey];
-    tasks.style.display=isNowCollapsed?"none":"";
-    if(icon)icon.textContent=isNowCollapsed?'▶':'▼';
-  }
-}
-
-function toggleReminderDone(remKey){
-  var dismissed=JSON.parse(localStorage.getItem("bb_rem_dismissed")||"{}");
-  dismissed[remKey]=!dismissed[remKey];
-  if(!dismissed[remKey])delete dismissed[remKey];
-  localStorage.setItem("bb_rem_dismissed",JSON.stringify(dismissed));
-  openReminders(); // refresh panel
-}
-
-function collapseAllProj(collapse){
-  var upcoming=getUpcomingTasks(parseInt(localStorage.getItem("bb_reminder_days")||"7"));
-  var grouped={};
-  upcoming.forEach(function(r){grouped[r.project]=true;});
-  var collapsed={};
-  if(collapse){Object.keys(grouped).forEach(function(p){collapsed["proj_"+p.replace(/\s+/g,"_")]=true;});}
-  localStorage.setItem("bb_rem_collapsed",JSON.stringify(collapsed));
-  openReminders();
-}
-
-function clearAllDone(){
-  if(!confirm("Clear all 'Done' marks and start fresh?"))return;
-  localStorage.removeItem("bb_rem_dismissed");
-  openReminders();
 }
 
 
@@ -4404,13 +4415,25 @@ function checkReminders(){
   var upcoming=getUpcomingTasks(days);
   var btn=document.getElementById("reminders-btn");
   if(!btn)return;
-  // Count tasks with materials to order or same-day/tomorrow tasks
+
+  // Check for unread daily notes
+  var lastSeen=localStorage.getItem('bb_notes_last_seen')||'0';
+  var allNotes=getDailyNotes();
+  var unreadNotes=allNotes.filter(function(n){return !n.done&&n.ts&&(lastSeen==='0'||n.ts>lastSeen);}).length;
+
+  // Urgent tasks (3 days or less, or materials to order)
   var urgent=upcoming.filter(function(r){return r.daysUntil<=3||r.materials.length>0;});
-  if(urgent.length>0){
+
+  var totalAlerts=urgent.length+unreadNotes;
+
+  if(totalAlerts>0){
+    var parts=[];
+    if(urgent.length>0) parts.push(urgent.length+" task"+(urgent.length>1?"s":""));
+    if(unreadNotes>0) parts.push(unreadNotes+" note"+(unreadNotes>1?"s":""));
     btn.style.background="linear-gradient(135deg,#e53e3e,#c53030)";
     btn.style.borderColor="transparent";
     btn.style.color="#fff";
-    btn.innerHTML="🔔 Reminders <span style='background:rgba(255,255,255,0.3);border-radius:99px;padding:1px 6px;font-size:10px;font-weight:800;margin-left:4px'>"+urgent.length+"</span>";
+    btn.innerHTML="🔔 Reminders <span style='background:rgba(255,255,255,0.3);border-radius:99px;padding:1px 6px;font-size:10px;font-weight:800;margin-left:4px'>"+totalAlerts+"</span>";
   } else if(upcoming.length>0){
     btn.style.background="linear-gradient(135deg,#d97706,#b45309)";
     btn.style.borderColor="transparent";
@@ -5376,6 +5399,9 @@ function closeDailyNotes(){
   var ov=document.getElementById("dn-overlay");
   if(panel)panel.classList.remove("open");
   if(ov)ov.classList.remove("show");
+  // Mark all notes as seen when closing
+  localStorage.setItem('bb_notes_last_seen',new Date().toISOString());
+  checkReminders();
 }
 function renderDailyNotesPanel(){
   var panel=document.getElementById("daily-notes-panel");if(!panel)return;
@@ -5436,8 +5462,14 @@ function addDailyNote(){
   var inp=document.getElementById("dn-input");var text=(inp?inp.value:"").trim();if(!text)return;
   var proj=document.getElementById("dn-proj-sel");
   var notes=getDailyNotes();
-  notes.unshift({id:Date.now(),text:text,tag:window._dnTag||"",project:proj?proj.value:"",ts:new Date().toISOString(),done:false});
-  saveDailyNotes(notes);if(inp)inp.value="";window._dnTag=null;renderDailyNotesPanel();
+  var now=new Date().toISOString();
+  notes.unshift({id:Date.now(),text:text,tag:window._dnTag||"",project:proj?proj.value:"",ts:now,done:false});
+  saveDailyNotes(notes);
+  localStorage.setItem('bb_last_note_added',now);
+  // Reset lastSeen so new note always shows in reminders
+  localStorage.removeItem('bb_notes_last_seen');
+  if(inp)inp.value="";window._dnTag=null;renderDailyNotesPanel();
+  checkReminders();
   setTimeout(function(){var i=document.getElementById("dn-input");if(i)i.focus();},50);
 }
 function toggleDailyNoteDone(idx){var notes=getDailyNotes();if(!notes[idx])return;notes[idx].done=!notes[idx].done;saveDailyNotes(notes);renderDailyNotesPanel();}
@@ -5457,6 +5489,12 @@ function copyDailyNotes(){
   todayNotes.forEach(function(n){text+=(n.done?"✓ ":"• ")+(n.tag?"["+n.tag+"] ":"")+n.text+(n.project?" ("+n.project+")":"")+"\n";});
   text+="\n— BusyBee Schedule";
   navigator.clipboard.writeText(text).then(function(){showToast("✓ Today\'s notes copied!");});
+}
+
+function markAllNotesRead(){
+  localStorage.setItem('bb_notes_last_seen',new Date().toISOString());
+  checkReminders();
+  openReminders();
 }
 </script>
 </body>
