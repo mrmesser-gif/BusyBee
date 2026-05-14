@@ -509,8 +509,8 @@ table.gt td.gcell.ms  { border-left:1px solid var(--bdr2) }
   position:absolute;top:2px;left:2px;
   font-size:11px;font-weight:800;white-space:nowrap;
   pointer-events:none;z-index:4;color:var(--txt2);
-  text-shadow:0 0 3px var(--sur),0 0 3px var(--sur);
-  overflow:hidden;max-width:120px;text-overflow:ellipsis
+  text-shadow:0 1px 2px #fff,0 0 4px #fff,0 0 4px #fff;
+  max-width:200px;overflow:hidden;text-overflow:ellipsis
 }
 
 .gstat-sel {
@@ -1428,6 +1428,232 @@ table.gt td.budchd-client:hover, table.gt td.budchd-builder:hover, table.gt td.b
 .rem-note-proj{font-size:11px;color:var(--txt3);font-weight:600}
 .rem-note-time{font-size:10px;color:var(--txt3);margin-left:auto}
 .rem-note-text{font-size:13px;color:var(--txt);line-height:1.5}
+
+/* ══ MOBILE OPTIMIZATIONS ══════════════════════════════════════════════ */
+@media(max-width:768px){
+
+  /* ── Topbar ── */
+  .topbar{padding:8px 12px;height:auto;min-height:52px}
+  .brand-frame{padding:4px 10px 4px 8px}
+  .brand-name{font-size:17px}
+  .brand-tagline{display:none}
+  .topbar-actions{gap:5px}
+  .tbtn{font-size:11px;padding:6px 10px}
+  .tbtn.gold{padding:6px 12px}
+  .menu-hamburger-btn{font-size:10px;padding:2px 5px}
+
+  /* ── Reminders panel - full screen ── */
+  .rem-panel{
+    width:100%!important;
+    right:-100%!important;
+    top:0;bottom:0;
+    border-radius:0!important;
+    border-left:none!important;
+  }
+  .rem-panel.open{right:0!important}
+  .rem-panel-header{padding:14px 16px}
+  .rem-panel-body{padding:10px 12px;gap:10px}
+
+  /* Bigger touch targets for reminder cards */
+  .rem-card{border-radius:12px}
+  .rem-card-head{padding:12px 14px}
+  .rem-card-body{padding:14px}
+  .rem-task-name{font-size:16px}
+  .rem-row{font-size:13px}
+  .rem-lbl{min-width:90px;font-size:11px}
+  .rem-val{font-size:13px;font-weight:600}
+
+  /* Bigger done/copy buttons */
+  .rem-done-btn{
+    font-size:13px!important;
+    padding:10px 16px!important;
+    border-radius:10px!important;
+    flex:1;
+    text-align:center;
+  }
+  .rem-copy-btn{
+    font-size:13px!important;
+    padding:10px 16px!important;
+    border-radius:10px!important;
+    flex:1;
+    text-align:center;
+  }
+
+  /* Control buttons row */
+  .rem-ctrl-btn{
+    padding:8px 12px!important;
+    font-size:12px!important;
+    flex:1;
+    text-align:center;
+  }
+
+  /* Days selector */
+  .rem-days-sel{
+    font-size:13px!important;
+    padding:8px 10px!important;
+  }
+
+  /* Close button bigger */
+  .rem-close-btn{
+    width:36px!important;
+    height:36px!important;
+    font-size:20px!important;
+  }
+
+  /* Project group headers - bigger tap target */
+  .rem-proj-group-header{
+    padding:12px 14px!important;
+    min-height:48px;
+  }
+
+  /* ── Notes panel - full screen ── */
+  .dn-panel{
+    width:100%!important;
+    right:-100%!important;
+    top:0;bottom:0;
+    border-radius:0!important;
+    border-left:none!important;
+  }
+  .dn-panel.open{right:0!important}
+  .dn-header{padding:14px 16px}
+  .dn-input-area{padding:12px 14px}
+
+  /* Bigger textarea */
+  .dn-input{
+    font-size:16px!important;
+    padding:12px!important;
+    min-height:80px!important;
+  }
+
+  /* Bigger add button */
+  .dn-add-btn{
+    font-size:15px!important;
+    padding:10px 20px!important;
+    min-height:44px;
+  }
+
+  /* Tags - bigger tap targets */
+  .dn-tag-pick{
+    font-size:12px!important;
+    padding:6px 12px!important;
+    min-height:36px;
+    display:flex;align-items:center;
+  }
+
+  /* Notes list items */
+  .dn-item{padding:12px 14px;border-radius:12px}
+  .dn-check{font-size:22px!important;min-width:32px;min-height:32px;display:flex;align-items:center;justify-content:center}
+  .dn-item-text{font-size:14px!important;line-height:1.6!important}
+  .dn-del-btn{
+    opacity:1!important;
+    font-size:20px!important;
+    min-width:36px;min-height:36px;
+    display:flex;align-items:center;justify-content:center;
+  }
+
+  /* Footer buttons */
+  .dn-footer-btn{
+    padding:12px!important;
+    font-size:13px!important;
+    min-height:48px;
+  }
+
+  /* Project selector */
+  .dn-proj-sel{
+    font-size:14px!important;
+    padding:8px 10px!important;
+    min-height:40px;
+  }
+
+  /* ── Notes in reminders ── */
+  .rem-notes-section{padding:10px 12px}
+  .rem-note-card{padding:12px 14px;border-radius:10px}
+  .rem-note-text{font-size:14px!important;line-height:1.6}
+  .rem-notes-mark-btn{
+    font-size:12px!important;
+    padding:8px 14px!important;
+    min-height:40px;
+  }
+
+  /* ── Prevent zoom on input focus (iOS) ── */
+  input, textarea, select{
+    font-size:16px!important;
+  }
+  .dn-tag-pick, .tbtn, .rem-done-btn, .rem-copy-btn{
+    -webkit-tap-highlight-color:rgba(0,0,0,0.1);
+  }
+
+  /* ── Body padding for bottom nav ── */
+  body{padding-bottom:68px}
+}
+
+/* Extra small phones */
+@media(max-width:380px){
+  .brand-name{font-size:15px}
+  .tbtn{font-size:10px;padding:5px 8px}
+  .rem-task-name{font-size:15px}
+}
+
+/* ── Solid white on ALL sticky Gantt body cells (no transparency) ── */
+table.gt tbody td.ntd,
+table.gt tbody td.std,
+table.gt tbody td.asgdtd,
+table.gt tbody td.ddtd,
+table.gt tbody td.crittd,
+table.gt tbody td.budchd-client,
+table.gt tbody td.budchd-builder,
+table.gt tbody td.budchd-profit {
+  background:#ffffff!important;
+}
+table.gt tbody tr:hover td.ntd,
+table.gt tbody tr:hover td.std,
+table.gt tbody tr:hover td.asgdtd,
+table.gt tbody tr:hover td.ddtd,
+table.gt tbody tr:hover td.crittd,
+table.gt tbody tr:hover td.budchd-client,
+table.gt tbody tr:hover td.budchd-builder,
+table.gt tbody tr:hover td.budchd-profit {
+  background:#f7fafc!important;
+}
+
+/* ── Critical, Client $, Builder $, Profit — fully opaque ── */
+table.gt th.crithd,
+table.gt th.budchd-client,
+table.gt th.budchd-builder,
+table.gt th.budchd-profit {
+  background:#f0ede8!important;
+}
+table.gt td.crittd,
+table.gt td.budchd-client,
+table.gt td.budchd-builder,
+table.gt td.budchd-profit {
+  background:#ffffff!important;
+}
+table.gt tbody tr:hover td.crittd,
+table.gt tbody tr:hover td.budchd-client,
+table.gt tbody tr:hover td.budchd-builder,
+table.gt tbody tr:hover td.budchd-profit {
+  background:#f7fafc!important;
+}
+
+/* ── Ensure sticky cols fully cover floating task labels ── */
+.gantt-wrap{overflow-x:auto;overflow-y:visible;position:relative}
+table.gt th.crithd,table.gt th.budchd-client,table.gt th.budchd-builder,table.gt th.budchd-profit{z-index:12!important;background:#f0ede8!important}
+table.gt td.crittd,table.gt td.budchd-client,table.gt td.budchd-builder,table.gt td.budchd-profit{z-index:8!important;background:#ffffff!important}
+table.gt th.nhd,table.gt th.shd,table.gt th.asgdhd,table.gt th.ddhd{z-index:12!important}
+table.gt td.ntd,table.gt td.std,table.gt td.asgdtd,table.gt td.ddtd{z-index:8!important;background:#ffffff!important}
+
+/* ── Complete tasks - same color as regular, no gray/desaturation ── */
+table.gt tbody tr .gbar {
+  opacity: 1 !important;
+  filter: none !important;
+}
+
+/* ── Milestone marker (0-duration tasks) ── */
+.gbar-milestone{
+  position:absolute;
+  pointer-events:none;
+}
 </style>
 </head>
 <body>
@@ -1556,13 +1782,25 @@ const PHASES={
   "Structural":  {bg:"#c6f6d5",bd:"#276749",tx:"#1c4532"},
   "Exterior":    {bg:"#fed7c3",bd:"#c05621",tx:"#7b341e"},
   "Rough-ins":   {bg:"#e9d8fd",bd:"#6b46c1",tx:"#44337a"},
-  "Code Sync":   {bg:"#e2e8f0",bd:"#718096",tx:"#2d3748"},
+  "Code Sync":   {bg:"#e9d8fd",bd:"#6b46c1",tx:"#44337a"},
   "Inspections": {bg:"#fed7d7",bd:"#c53030",tx:"#742a2a"},
   "Finishes":    {bg:"#b2f5ea",bd:"#285e61",tx:"#1d4044"},
   "Interior":    {bg:"#feebc8",bd:"#c05621",tx:"#7b341e"},
   "Finals":      {bg:"#bee3f8",bd:"#2c5282",tx:"#1a365d"},
   "Roofing":     {bg:"#e8eaf6",bd:"#283593",tx:"#1a237e"},
   "Site Mgmt":   {bg:"#fff8e1",bd:"#f57f17",tx:"#e65100"},
+  "Framing":     {bg:"#fbd38d",bd:"#c05621",tx:"#7b341e"},
+  "Plumbing":    {bg:"#bee3f8",bd:"#2b6cb0",tx:"#1a365d"},
+  "Electrical":  {bg:"#e9d8fd",bd:"#6b46c1",tx:"#44337a"},
+  "HVAC":        {bg:"#b2f5ea",bd:"#285e61",tx:"#1d4044"},
+  "Insulation":  {bg:"#c6f6d5",bd:"#276749",tx:"#1c4532"},
+  "Drywall":     {bg:"#fed7c3",bd:"#c05621",tx:"#7b341e"},
+  "Flooring":    {bg:"#feebc8",bd:"#c05621",tx:"#7b341e"},
+  "Painting":    {bg:"#b2f5ea",bd:"#285e61",tx:"#1d4044"},
+  "Cabinets":    {bg:"#bee3f8",bd:"#2b6cb0",tx:"#1a365d"},
+  "Landscaping": {bg:"#c6f6d5",bd:"#276749",tx:"#1c4532"},
+  "Cleanup":     {bg:"#fefcbf",bd:"#d69e2e",tx:"#744210"},
+  "General":     {bg:"#bee3f8",bd:"#2b6cb0",tx:"#1a365d"},
 };
 const STATUS_C={
   "Complete":    {bg:"#c6f6d5",tx:"#1c4532",dot:"#48bb78"},
@@ -1909,7 +2147,7 @@ function renderTasks(){
     </div>`;
     const cards=pTasks.map(t=>{
     const idx=tasks.indexOf(t);
-    const ph=PHASES[t.phase]||{bg:"#eee",bd:"#999",tx:"#333"};
+    const ph=PHASES[t.phase]||{bg:"#bee3f8",bd:"#2b6cb0",tx:"#1a365d"};
     const sc=STATUS_C[t.status]||{bg:"#eee",tx:"#333"};
     const phOpts=Object.keys(PHASES).map(p=>`<option${p===t.phase?" selected":""}>${p}</option>`).join("");
     const stOpts=["Complete","In Progress","Pending","On Hold","Delayed"].map(s=>`<option${s===t.status?" selected":""}>${s}</option>`).join("");
@@ -2069,7 +2307,7 @@ function renderGantt(){
   // ── Body rows ───────────────────────────────────────────────────────────
   const tbody=gt.createTBody();
   tasks.forEach((t,idx)=>{
-    const ph=PHASES[t.phase]||{bg:"#eee",bd:"#999"};
+    const ph=PHASES[t.phase]||{bg:"#bee3f8",bd:"#2b6cb0",tx:"#1a365d"};
     const sc=STATUS_C[t.status]||{bg:"#eee",tx:"#333"};
     const tr=tbody.insertRow();tr.dataset.idx=idx;
     tr.addEventListener("click",function(ev){if(depState&&depState.linking&&!ev.target.closest("button")&&!ev.target.closest("input")&&!ev.target.closest("select")){depRowClick(idx);}});
@@ -2223,11 +2461,17 @@ function renderGantt(){
 
     // Unscheduled task – placeholder spanning timeline
     if(t.so==null||t.eo==null){
-      const ph2=tr.insertCell();ph2.colSpan=TOTAL+1;
-      ph2.style.cssText="padding:0;vertical-align:middle";
-      const btn=document.createElement("div");btn.className="gantt-unscheduled";
-      btn.textContent="⊕ Click to set start date";btn.onclick=()=>openSetStartDate(idx);
-      ph2.appendChild(btn);
+      // Render individual day cells (same as scheduled) but empty — click row to schedule
+      tr.style.cursor="pointer";
+      tr.title="Click on a cell to set start date";
+      for(var _d=0;_d<TOTAL;_d++){
+        var _td=tr.insertCell();
+        var _dow=o2d(_d).getDay();
+        _td.className="gcell"+(_dow===0?" sun":_dow===6?" sat":"")+(_d===todayOff?" tc":"")+(isMS(_d)?" ms":"");
+        _td.dataset.row=idx;_td.dataset.day=_d;
+        // Click any cell to set start date
+        _td.onclick=(function(di){return function(){openSetStartDate(idx,di);};}(_d));
+      }
       // Budget cells for unscheduled tasks
       var utdC=tr.insertCell();utdC.className="budchd-client";
       var uinpC=document.createElement("input");uinpC.type="number";uinpC.min="0";uinpC.step="0.01";
@@ -2253,11 +2497,18 @@ function renderGantt(){
       const dow=o2d(d).getDay();
       td.className="gcell"+(dow===0?" sun":dow===6?" sat":"")+(d===todayOff?" tc":"")+(isMS(d)?" ms":"");
       td.dataset.row=idx;td.dataset.day=d;
-      if(d>=t.so&&d<t.eo){
-        const bar=document.createElement("div");bar.className="gbar";
-        bar.style.cssText=`background:${ph.bg};border-top:2px solid ${ph.bd};border-bottom:2px solid ${ph.bd};`
-          +(d===t.so?`border-left:3px solid ${ph.bd};border-radius:3px 0 0 3px;`:"")
-          +(d===t.eo-1?`border-right:3px solid ${ph.bd};border-radius:0 3px 3px 0;`:"");
+      if((d>=t.so&&d<t.eo)||(d===t.so&&t.so===t.eo)){
+        const isZeroDur = t.so===t.eo;
+        const bar=document.createElement("div");
+        if(isZeroDur){
+          bar.className="gbar gbar-milestone";
+          bar.style.cssText="background:"+ph.bd+";width:10px;height:10px;top:50%;left:50%;transform:translate(-50%,-50%) rotate(45deg);border-radius:2px;position:absolute;pointer-events:none;";
+        } else {
+          bar.className="gbar";
+          bar.style.cssText=`background:${ph.bg};border-top:2px solid ${ph.bd};border-bottom:2px solid ${ph.bd};`
+            +(d===t.so?`border-left:3px solid ${ph.bd};border-radius:3px 0 0 3px;`:"")
+            +(d===t.eo-1?`border-right:3px solid ${ph.bd};border-radius:0 3px 3px 0;`:"");
+        }
         td.appendChild(bar);
         if(d===t.so){
           // Assignee label floating above bar
@@ -2317,14 +2568,14 @@ function renderGantt(){
 }
 function refreshGRow(t,tr){
   const ridx=parseInt(tr.dataset.idx);
-  const ph=PHASES[t.phase]||{bg:"#eee",bd:"#999"};
+  const ph=PHASES[t.phase]||{bg:"#bee3f8",bd:"#2b6cb0",tx:"#1a365d"};
   tr.querySelectorAll(".gcell").forEach(td=>{
     const d=parseInt(td.dataset.day);td.innerHTML="";
-    if(d>=t.so&&d<t.eo){
+    if((d>=t.so&&d<t.eo)||(d===t.so&&t.so===t.eo)){
       const bar=document.createElement("div");bar.className="gbar";
       bar.style.cssText=`background:${ph.bg};border-top:2px solid ${ph.bd};border-bottom:2px solid ${ph.bd};`
         +(d===t.so?`border-left:3px solid ${ph.bd};border-radius:3px 0 0 3px;`:"")
-        +(d===t.eo-1?`border-right:3px solid ${ph.bd};border-radius:0 3px 3px 0;`:"");
+        +(d===t.eo-1||t.so===t.eo?`border-right:3px solid ${ph.bd};border-radius:0 3px 3px 0;`:"");
       td.appendChild(bar);
       if(d===t.so){
         if(t.name){const lbl=document.createElement("div");lbl.className="bar-who-label";lbl.textContent=t.name;td.appendChild(lbl);}
@@ -3321,7 +3572,7 @@ createFromTemplate = function(tplName){
 };
 
 // ── Set start date for a task ─────────────────────────────────────────────
-function openSetStartDate(idx){
+function openSetStartDate(idx,suggestedDay){
   const tasks = proj()?.tasks;
   if(!tasks) return;
   const t = tasks[idx];
@@ -4385,6 +4636,8 @@ function openReminders(){
     +'<div class="rem-panel-body">'+notesSection+cards+'</div>';
 
   panel.classList.add("open");
+  // Scroll panel to top on open
+  setTimeout(function(){var body=panel.querySelector('.rem-panel-body');if(body)body.scrollTop=0;},50);
   var ov=document.getElementById("rem-overlay");
   if(!ov){ov=document.createElement("div");ov.id="rem-overlay";ov.className="rem-ov";ov.onclick=closeReminders;document.body.appendChild(ov);}
   ov.classList.add("show");
@@ -5389,6 +5642,7 @@ function openDailyNotes(){
   if(!panel){panel=document.createElement("div");panel.id="daily-notes-panel";panel.className="dn-panel";document.body.appendChild(panel);}
   renderDailyNotesPanel();
   panel.classList.add("open");
+  setTimeout(function(){var body=panel.querySelector('.dn-list');if(body)body.scrollTop=0;},50);
   var ov=document.getElementById("dn-overlay");
   if(!ov){ov=document.createElement("div");ov.id="dn-overlay";ov.className="rem-ov";ov.onclick=closeDailyNotes;document.body.appendChild(ov);}
   ov.classList.add("show");
