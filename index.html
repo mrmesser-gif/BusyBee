@@ -1445,7 +1445,6 @@ table.gt td.budchd-client:hover, table.gt td.budchd-builder:hover, table.gt td.b
         <div class="topmenu-section-label">Actions</div>
         <button class="topmenu-item" onclick="openFieldView();closeTopMenu()">⚡ Field View</button>
         <button class="topmenu-item" onclick="openStandupReport();closeTopMenu()">📋 Daily Standup</button>
-        <button class="topmenu-item" onclick="openReminders();closeTopMenu()" id="tm-reminders-btn">🔔 Reminders</button>
         <button class="topmenu-item" onclick="openIntelligence();closeTopMenu()" id="tm-intel-btn">🧠 Intelligence</button>
         <div class="topmenu-divider"></div>
         <div class="topmenu-section-label">Export</div>
@@ -1458,6 +1457,7 @@ table.gt td.budchd-client:hover, table.gt td.budchd-builder:hover, table.gt td.b
       </div>
     </div>
     <!-- Primary action -->
+    <button class="tbtn notif-topbar-btn" onclick="openReminders()" id="reminders-btn">🔔 Reminders</button>
     <button class="tbtn dn-topbar-btn" onclick="openDailyNotes()" id="daily-notes-btn" title="Daily Notes">📓 Notes</button>
     <button class="tbtn gold" onclick="openAddTask()">+ Task</button>
     <!-- User + cloud status -->
@@ -5399,8 +5399,6 @@ function closeDailyNotes(){
   var ov=document.getElementById("dn-overlay");
   if(panel)panel.classList.remove("open");
   if(ov)ov.classList.remove("show");
-  // Mark all notes as seen when closing
-  localStorage.setItem('bb_notes_last_seen',new Date().toISOString());
   checkReminders();
 }
 function renderDailyNotesPanel(){
